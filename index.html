@@ -123,6 +123,17 @@
   @media (max-width: 540px) { .menu-mini-btn span:not(.notif-badge) { display: none; } .menu-mini-btn { padding: 0; width: 28px; } }
   .menu-mini-btn .notif-badge { position: absolute; top: -5px; right: -5px; margin: 0; }
   #discord-float { position: fixed; top: 14px; right: 14px; z-index: 46; display: none; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 10px; background: #5865f2; color: #fff; font-size: 12px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 14px rgba(88,101,242,0.4); transition: background 0.15s ease, transform 0.15s ease; }
+  #request-float { position: fixed; top: 14px; left: 14px; z-index: 46; display: none; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 10px; background: #f5c518; color: #1a1500; font-size: 12px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 14px rgba(245,197,24,0.4); transition: background 0.15s ease, transform 0.15s ease; }
+  #request-float:hover { background: #ffd93d; transform: translateY(-1px); }
+  #request-float .mi { width: 18px; height: 18px; }
+  body.menu-open:not(.in-lobby) #request-float { display: flex; }
+  @media (max-width: 640px) {
+    #request-float span, #discord-float span { display: none; }
+    #request-float, #discord-float { padding: 0 10px; }
+    /* leave a strip above the menu card for the two corner buttons so they never cover its Back arrow */
+    body.menu-open:not(.in-lobby) #menu { padding-top: 58px; }
+    body.menu-open:not(.in-lobby) #menu-bubble { max-height: calc(100vh - 74px); max-height: calc(100svh - 74px); }
+  }
   #discord-float:hover { background: #4752c4; transform: translateY(-1px); }
   #discord-float .mi { width: 18px; height: 18px; }
   body.menu-open:not(.in-lobby) #discord-float { display: flex; }
@@ -212,11 +223,78 @@
   body.eink-mode .menu-tab.active { background: #000 !important; color: #fff !important; }
   body.eink-mode #menu-title, body.eink-mode .menu-btn .mi { color: #000 !important; }
   #fish-water { position: relative; min-height: 92px; border-radius: 14px; background: linear-gradient(180deg, rgba(45,212,191,0.10), rgba(36,80,164,0.28)); border: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; text-align: center; padding: 12px 14px; overflow: hidden; }
-  #fish-scene { position: relative; width: 320px; max-width: 100%; height: 160px; margin: 0 auto; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
-  #fish-scene .fs-layer { position: absolute; left: 0; top: 0; width: 320px; height: 160px; pointer-events: none; }
-  #fs-avatar { position: absolute; left: 38px; top: 42px; width: 34px; height: 34px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; background: #222; }
-  #fs-item { position: absolute; left: 0; top: 0; width: 56px; height: 34px; display: none; pointer-events: none; }
-  #fs-item svg { width: 100%; height: 100%; overflow: visible; }
+  .fish-scene { position: relative; width: 320px; max-width: 100%; height: 160px; margin: 0 auto; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
+  .fish-scene .fs-layer { position: absolute; left: 0; top: 0; width: 320px; height: 160px; pointer-events: none; }
+  .fs-avatar { position: absolute; left: 38px; top: 42px; width: 34px; height: 34px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; background: #222; }
+  .fs-item { position: absolute; left: 0; top: 0; width: 56px; height: 34px; display: none; pointer-events: none; }
+  .fs-item svg { width: 100%; height: 100%; overflow: visible; }
+  #btn-fish-trade.alert { border-color: #f0b232; box-shadow: 0 0 0 2px rgba(240,178,50,0.35); }
+  .trade-card { display: flex; flex-direction: column; gap: 8px; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; }
+  .trade-title { font-size: 14px; font-weight: 700; }
+  .trade-sub, .trade-dim { font-size: 11px; color: var(--text-muted); }
+  .trade-note { font-size: 12px; }
+  .trade-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .trade-row .win-input { flex: 1; min-width: 90px; }
+  .trade-grey { background: rgba(255,255,255,0.08) !important; }
+  .trade-cols { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; }
+  .trade-col { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .trade-h { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-secondary); }
+  .trade-picks { display: flex; flex-direction: column; gap: 3px; max-height: 60vh; overflow-y: auto; padding-right: 2px; }
+  .trade-pick { display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 3px 6px; border-radius: 8px; background: rgba(255,255,255,0.03); font-size: 12px; }
+  .trade-pick.on { background: rgba(34,197,94,0.14); }
+  .trade-pname { padding-left: 6px; min-width: 0; line-height: 1.2; }
+  .trade-block { display: block; }
+  .trade-step { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .trade-step button { width: 24px; height: 24px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: var(--text-primary); cursor: pointer; font-weight: 800; }
+  .trade-step b { min-width: 16px; text-align: center; }
+  .trade-line { font-size: 12px; }
+  .trade-pb { color: var(--gold); font-weight: 700; }
+  .trade-status { font-size: 12px; }
+  .map-list { display: flex; flex-direction: column; gap: 8px; }
+  .map-card { display: flex; gap: 10px; padding: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; align-items: stretch; }
+  .map-card.here { border-color: #22c55e; }
+  .map-swatch { width: 64px; min-height: 52px; border-radius: 8px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.18); }
+  .map-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+  .map-name { font-size: 14px; font-weight: 700; }
+  .map-blurb { font-size: 11px; color: var(--text-muted); }
+  .map-need { font-size: 11px; }
+  .map-excl { font-size: 11px; font-weight: 700; color: #f0b232; }
+  .fish-mapchip { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 6px; background: rgba(255,255,255,0.1); color: var(--text-secondary); margin-left: 5px; vertical-align: middle; }
+  .map-here { font-size: 11px; font-weight: 700; color: #22c55e; }
+  .map-btn { align-self: flex-start; padding: 5px 12px; font-size: 12px; font-weight: 700; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: var(--accent); color: #fff; cursor: pointer; font-family: inherit; }
+  .map-btn:disabled { opacity: 0.4; cursor: default; }
+  .rod-card { display: flex; flex-direction: column; gap: 8px; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; }
+  .rod-head { display: flex; align-items: center; gap: 10px; }
+  .rod-ico { width: 56px; height: 22px; flex-shrink: 0; }
+  .rod-name { font-size: 14px; font-weight: 700; }
+  .rod-sub { font-size: 11px; color: var(--text-muted); }
+  .rod-sub.broken { color: var(--red); font-weight: 700; }
+  .rod-bar { height: 8px; border-radius: 6px; background: rgba(255,255,255,0.08); overflow: hidden; }
+  .rod-fill { height: 100%; border-radius: 6px; transition: width 0.3s ease, background 0.3s ease; }
+  .rod-shop { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .rod-buy { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 7px 9px; border-radius: 9px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); cursor: pointer; font-family: inherit; text-align: left; }
+  .rod-buy:hover { border-color: var(--accent); background: rgba(255,255,255,0.07); }
+  .rod-buy.equipped { border-color: #22c55e; }
+  .rod-buy .rb-name { font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 5px; }
+  .rod-buy .rb-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .rod-buy .rb-sub { font-size: 10px; color: var(--text-muted); }
+  .fs-shaking { animation: fsShake 0.07s linear infinite; }
+  @keyframes fsShake { 0% { transform: translate(0, 0); } 25% { transform: translate(-2px, 1px); } 50% { transform: translate(2px, -1px); } 75% { transform: translate(-1px, -1px); } 100% { transform: translate(0, 0); } }
+  .fs-snap-text { position: absolute; left: 50%; top: 24%; transform: translate(-50%, -50%); font-size: 34px; font-weight: 900; letter-spacing: 2px; color: #fff; -webkit-text-stroke: 2px #b91c1c; pointer-events: none; animation: fsSnapPop 1.1s ease forwards; z-index: 3; }
+  @keyframes fsSnapPop { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3) rotate(-8deg); } 20% { opacity: 1; transform: translate(-50%, -50%) scale(1.25) rotate(4deg); } 35% { transform: translate(-50%, -50%) scale(1) rotate(-2deg); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -60%) scale(1); } }
+  .mg-wrap { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .mg-live { font-size: 24px; font-weight: 800; letter-spacing: 2px; min-height: 30px; text-transform: uppercase; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+  .mg-speed { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; color: var(--text-muted); min-height: 14px; }
+  .mg-speed.fast { color: #ff5a5a; }
+  .mg-bar { position: relative; display: flex; width: 320px; max-width: 100%; height: 46px; border-radius: 10px; overflow: hidden; border: 2px solid rgba(255,255,255,0.25); cursor: pointer; touch-action: manipulation; user-select: none; }
+  .mg-bar.fast { box-shadow: 0 0 14px rgba(255,90,90,0.55); }
+  .mg-seg { height: 100%; flex: 0 0 auto; }
+  .mg-seg.hit { outline: 3px solid #fff; outline-offset: -3px; position: relative; z-index: 1; }
+  .mg-ind { position: absolute; top: 0; bottom: 0; width: 4px; margin-left: -2px; background: #fff; box-shadow: 0 0 8px #fff, 0 0 2px #000; border-radius: 2px; pointer-events: none; }
+  .mg-legend { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; font-size: 10px; max-width: 340px; }
+  .mg-legend span { padding: 2px 6px; border-radius: 6px; font-weight: 700; color: #111; }
+  .mg-row { display: flex; gap: 8px; width: 100%; max-width: 320px; }
+  .mg-row .win-btn { flex: 1; padding: 10px 0; font-size: 14px; font-weight: 800; }
   .fs-wave { animation: fsWave 2.4s linear infinite; }
   @keyframes fsWave { from { transform: translateX(0); } to { transform: translateX(-40px); } }
   #fish-catch { text-align: center; min-height: 44px; }
@@ -342,6 +420,8 @@
   .ez-avatar.lg { width: 36px; height: 36px; margin-right: 8px; }
   .ez-avatar.xl { width: 72px; height: 72px; margin-right: 0; }
   .msg .rank-badge.rainbow { background: linear-gradient(120deg, #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff, #06ffa5, #ff006e); background-size: 400% 400%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: lava-flow 6s ease-in-out infinite; }
+  .discord-grad, .msg .rank-badge.discord-grad { font-weight: 700; background: linear-gradient(120deg, #5865f2, #3b82f6, #22d3ee, #4752c4, #7983f5, #5865f2); background-size: 400% 400%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: lava-flow 6s ease-in-out infinite; }
+  .msg.discord-msg { border-left: 3px solid #5865f2; background: rgba(88,101,242,0.08); padding-left: 6px; border-radius: 0 6px 6px 0; }
   .mod-name, .rank-badge.mod-rank { font-weight: 700; color: #3b82f6; }
   @keyframes toastIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
   @keyframes toastOut { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(20px); } }
@@ -399,7 +479,7 @@
   body.eink-mode #canvas-wrap, body.eink-mode #sidebar, body.eink-mode #viewport-wrap, body.eink-mode #menu-bubble, body.eink-mode #header, body.eink-mode #info-row, body.eink-mode #palette-row, body.eink-mode #messages, body.eink-mode #admin-panel { background: #fff !important; color: #000 !important; border-color: #000 !important; }
   body.eink-mode .win-btn { background: #fff !important; color: #000 !important; border: 2px solid #000 !important; font-weight: 700 !important; }
   body.eink-mode .win-input { background: #fff !important; color: #000 !important; border: 2px solid #000 !important; }
-  body.eink-mode #header h1, body.eink-mode .rainbow, body.eink-mode .rank-badge.rainbow, body.eink-mode .mod-name, body.eink-mode .rank-badge.mod-rank { background: none !important; -webkit-text-fill-color: #000 !important; color: #000 !important; }
+  body.eink-mode #header h1, body.eink-mode .rainbow, body.eink-mode .discord-grad, body.eink-mode .rank-badge.rainbow, body.eink-mode .mod-name, body.eink-mode .rank-badge.mod-rank { background: none !important; -webkit-text-fill-color: #000 !important; color: #000 !important; }
   body.eink-mode .msg, body.eink-mode .msg *, body.eink-mode .dm-msg, body.eink-mode .dm-msg * { color: #000 !important; }
   body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none !important; transition: none !important; }
   body.no-panorama #lobby-bg-canvas, body.no-panorama #lobby-bg-overlay { display: none !important; }
@@ -436,12 +516,6 @@
   .mobile-chat-bubble.fading { animation: chatBubbleOut 0.4s ease forwards; }
   .mobile-chat-bubble .mcb-name { font-weight: 700; color: var(--accent); margin-right: 4px; }
   .mobile-chat-bubble .mcb-name.owner { color: var(--red); }
-  .rtc-tile { background: var(--bg-elevated); border: 1px solid var(--accent); border-radius: var(--radius-md); padding: 4px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); display: flex; flex-direction: column; gap: 3px; }
-  .rtc-tile video { width: 180px; height: 135px; background: #000; border-radius: var(--radius-sm); object-fit: cover; display: block; }
-  .rtc-tile.audio-only { padding: 8px 12px; min-width: 120px; }
-  .rtc-tile.audio-only video { display: none; }
-  .rtc-tile .rtc-name { font-size: 11px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 4px; }
-  .rtc-tile .rtc-name .rtc-mic { font-size: 10px; }
 
   #mobile-sidebar-toggle { display: none; position: fixed; bottom: 14px; right: 14px; z-index: 45; width: 48px; height: 48px; font-size: 20px; border-radius: 50%; background: var(--accent); border: none; color: #fff; box-shadow: 0 4px 16px rgba(238,90,82,0.4); }
   #mobile-sidebar-toggle:hover { background: var(--accent-hover); }
@@ -518,9 +592,6 @@
   #sidebar-tabs { background: transparent; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 4px 8px 0; gap: 4px; }
   .sidebar-tab { color: var(--text-muted); font-weight: 500; border-bottom: 2px solid transparent; }
   .sidebar-tab.active { color: var(--text-primary); border-bottom-color: var(--accent); }
-  #call-bar { background: transparent !important; border-bottom: 1px solid rgba(255,255,255,0.06) !important; }
-  #call-bar .win-btn { background: rgba(255,255,255,0.04) !important; border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary) !important; font-weight: 500; box-shadow: none; }
-  #call-bar .win-btn:hover { border-color: rgba(255,255,255,0.2); transform: none; }
   #chat-filter-bar { color: var(--text-muted); }
   #messages { background: rgba(0,0,0,0.18); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; margin: 6px; }
   #chat-bar { border-top: 1px solid rgba(255,255,255,0.06); }
@@ -545,7 +616,6 @@
   #more-panel #btn-report:hover { background: rgba(240,100,100,0.1) !important; }
   .more-ping { padding: 6px 10px 2px; font-size: 10px; color: var(--text-muted); border-top: 1px solid rgba(255,255,255,0.06); margin-top: 4px; }
   #user-bar { padding: 8px 12px; }
-  #call-bar:not(:has(#btn-mute:not([style*="none"]))) { display: none !important; }
   #messages { margin: 8px; }
   #wheel-group { gap: 12px; }
   #wheel-side { gap: 8px; }
@@ -574,8 +644,6 @@
       <div id="more-wrap">
         <button id="btn-more" class="win-btn" title="More">More</button>
         <div id="more-panel" style="display:none">
-          <button id="btn-voice" class="more-item" style="display:none">Voice</button>
-          <button id="btn-video" class="more-item" style="display:none">Video</button>
           <button id="btn-timelapse" class="more-item" style="display:none">Flashback</button>
           <button id="btn-export-grid" class="more-item" style="display:none">Export</button>
           <button id="btn-import-grid" class="more-item" style="display:none">Import</button>
@@ -586,7 +654,6 @@
           <div class="more-ping">Ping: <span id="ping-ms">--</span>ms</div>
         </div>
       </div>
-      <button id="btn-menu" class="win-btn">Menu</button>
       <button id="btn-leave-lobby" class="win-btn" style="display:none">Leave Lobby</button>
       <div id="online" title="Click to see who is online" style="cursor:pointer;"><span id="online-count">0</span> here &middot; <span id="total-online">0</span> online</div>
       <div id="online-panel" style="display:none;position:fixed;top:52px;right:14px;z-index:70;background:var(--bg-elevated);border:1px solid var(--accent);border-radius:var(--radius-md);box-shadow:0 8px 24px rgba(0,0,0,0.6);padding:10px 12px;min-width:220px;max-width:280px;max-height:420px;overflow-y:auto;font-size:12px;"></div>
@@ -600,7 +667,7 @@
   <div id="cooldown-bar"><div id="cooldown-fill"></div></div>
   <div id="viewport-wrap">
     <canvas id="viewport"></canvas>
-    <div id="rtc-tiles" style="position:absolute;top:6px;right:6px;z-index:7;display:flex;flex-direction:column;gap:6px;max-width:200px;"></div>
+
     <div id="mobile-chat-overlay" style="position:absolute;top:6px;left:6px;right:6px;z-index:6;display:flex;flex-direction:column;gap:4px;pointer-events:none;"></div>
     <div id="zoom-buttons">
       <button id="zoom-in" class="win-btn">+</button>
@@ -963,10 +1030,6 @@
   </div>
 
   <div id="chat-tab" class="tab-panel active">
-    <div id="call-bar" style="padding:6px 8px;border-bottom:1px solid var(--border);background:var(--bg-tertiary);display:none;gap:4px;align-items:center;flex-wrap:wrap;">
-      <button id="btn-mute" class="win-btn" style="display:none;font-size:11px;padding:4px 10px;background:var(--bg-elevated)">Mute</button>
-      <button id="btn-leave-call" class="win-btn" style="display:none;font-size:11px;padding:4px 10px;background:var(--red);color:#fff">End Call</button>
-    </div>
     <div id="messages"></div>
     <div id="typing-indicator" style="display:none;font-size:12px;color:var(--accent);font-weight:600;padding:6px 12px;background:var(--accent-dim);border-left:3px solid var(--accent);margin:4px 6px 0;border-radius:var(--radius-sm);"><span id="typing-text"></span><span id="typing-dots" style="display:inline-block;margin-left:2px;letter-spacing:1px;"></span></div>
     <div id="chat-reply-bar" style="display:none;align-items:center;gap:6px;padding:4px 8px;margin:0 6px;background:var(--accent-dim);border-left:3px solid var(--accent);border-radius:var(--radius-sm);font-size:11px;color:var(--text-secondary);"><span id="chat-reply-text" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span><span id="chat-reply-cancel" style="cursor:pointer;font-weight:700;color:var(--text-muted);">&times;</span></div>
@@ -1180,6 +1243,7 @@
 <div id="menu">
   <canvas id="lobby-bg-canvas"></canvas>
   <div id="lobby-bg-overlay"></div>
+  <a id="request-float" href="https://docs.google.com/forms/d/e/1FAIpQLScEK1Y0x_fGSkRbJPWnALAI5cLA-SVvP1dC3fiKMBlJ-o_ztw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" title="Request a new feature or report a bug"><svg class="mi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="7" x2="12" y2="13"/><line x1="9" y1="10" x2="15" y2="10"/></svg><span>Request a new feature/bug fix</span></a>
   <a id="discord-float" href="https://discord.gg/ynMtYnuAbB" target="_blank" rel="noopener noreferrer"><svg class="mi" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 5.6A16.3 16.3 0 0 0 15.5 4.3l-.2.4a15 15 0 0 1 3.7 1.9 13.4 13.4 0 0 0-14 0 15 15 0 0 1 3.7-1.9l-.2-.4a16.3 16.3 0 0 0-4.1 1.3C2 9.5 1.3 13.3 1.6 17a16.5 16.5 0 0 0 5 2.5l1-1.7a10.6 10.6 0 0 1-1.7-.8l.4-.3a11.7 11.7 0 0 0 11.4 0l.4.3a10.6 10.6 0 0 1-1.7.8l1 1.7a16.5 16.5 0 0 0 5-2.5c.4-4.3-.7-8-2.8-11.4ZM8.7 14.7c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm6.6 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/></svg><span>Join the Discord</span></a>
   <div id="menu-bubble">
     <div id="menu-head">
@@ -1465,6 +1529,22 @@
             <div id="gd-msg" style="font-size:11px;min-height:14px;color:var(--text-muted);">Die at 0% lose bet · die at 50% break even · clear 100% = 3x. Multiplier scales linearly with progress.</div>
           </div>
         </details>
+        <details class="game-acc" id="mg-acc"><summary>Fishing Timing 🎣 <span class="game-hint">Stop the marker on a rarity - you get a random fish of that kind. 30 $ per cast</span></summary>
+          <div class="game-body">
+            <div class="mg-wrap">
+              <div id="mg-scene" class="fish-scene" data-pfx="mg-"></div>
+              <div id="mg-live" class="mg-live">&nbsp;</div>
+              <div id="mg-speed" class="mg-speed">&nbsp;</div>
+              <div id="mg-bar" class="mg-bar" style="display:none"><div id="mg-ind" class="mg-ind"></div></div>
+              <div id="mg-legend" class="mg-legend"></div>
+              <div class="mg-row">
+                <button id="btn-mg-cast" class="win-btn" style="background:var(--accent);color:#fff;">Cast line (30 $)</button>
+                <button id="btn-mg-stop" class="win-btn" style="display:none;background:var(--red);color:#fff;">STOP!</button>
+              </div>
+              <div id="mg-msg" style="font-size:12px;min-height:16px;color:var(--text-muted);text-align:center;"></div>
+            </div>
+          </div>
+        </details>
         <details class="game-acc"><summary>Mines 💣 <span class="game-hint">Reveal gems to grow your multiplier - cash out before a bomb</span></summary>
           <div class="game-body">
             <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
@@ -1623,33 +1703,13 @@
       </div>
 
       <div class="menu-view" id="menu-view-fishing">
-        <div id="fish-scene">
-          <svg class="fs-layer" viewBox="0 0 320 160" aria-hidden="true">
-            <defs>
-              <linearGradient id="fs-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5aa9e6"/><stop offset="1" stop-color="#bfe6ff"/></linearGradient>
-              <linearGradient id="fs-sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f8fc4"/><stop offset="1" stop-color="#14456f"/></linearGradient>
-            </defs>
-            <rect width="320" height="110" fill="url(#fs-sky)"/>
-            <circle cx="276" cy="28" r="14" fill="#ffe79a"/>
-            <ellipse cx="210" cy="26" rx="22" ry="7" fill="#fff" opacity=".8"/><ellipse cx="226" cy="22" rx="14" ry="6" fill="#fff" opacity=".8"/>
-            <rect x="26" y="106" width="8" height="54" fill="#5a3a1a"/><rect x="104" y="106" width="8" height="54" fill="#5a3a1a"/>
-            <rect y="104" width="320" height="56" fill="url(#fs-sea)" opacity=".92"/>
-            <g class="fs-wave"><path id="fs-wave-path" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2"/></g>
-            <rect x="38" y="76" width="30" height="24" rx="8" fill="#7c5cfc"/>
-            <rect x="0" y="100" width="130" height="8" fill="#8b5a2b"/><rect x="0" y="107" width="130" height="3" fill="#5a3a1a"/>
-          </svg>
-          <img id="fs-avatar" alt="">
-          <svg class="fs-layer" viewBox="0 0 320 160" aria-hidden="true">
-            <ellipse id="fs-rip" cx="232" cy="108" rx="0" ry="0" fill="none" stroke="#fff" stroke-width="2" opacity="0"/>
-            <line x1="66" y1="90" x2="72" y2="86" stroke="#e9b98a" stroke-width="5" stroke-linecap="round"/>
-            <line id="fs-rod" x1="72" y1="86" x2="158" y2="36" stroke="#6b4423" stroke-width="3" stroke-linecap="round"/>
-            <path id="fs-line" d="" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="1"/>
-            <g id="fs-bob" style="display:none"><circle r="5" fill="#fff"/><path d="M-5 0A5 5 0 0 1 5 0Z" fill="#e53935"/></g>
-          </svg>
-          <div id="fs-item"></div>
-        </div>
+        <div id="fish-scene" class="fish-scene" data-pfx="fs-"></div>
         <div id="fish-catch">Cast a line to see what you reel in.</div>
         <button class="menu-btn primary wide" id="btn-fish-cast">Cast line</button>
+        <button class="menu-btn wide" id="btn-fish-trade">Trade</button>
+        <div id="fish-trade-panel" style="display:none"></div>
+        <div id="fish-map-panel"></div>
+        <div id="fish-rod-panel"></div>
         <div id="fish-stats"></div>
         <div id="fish-status" class="lobby-empty" style="padding:0;min-height:14px;"></div>
         <div class="menu-tabs">
@@ -1666,9 +1726,9 @@
         <div class="menu-section">Earning PlaceBux</div>
         <div class="earn-card"><div class="earn-title">Place pixels</div><div class="earn-desc">1 PlaceBux for every 100 pixels you place.</div></div>
         <div class="earn-card"><div class="earn-title">Daily streak</div><div class="earn-desc">Spend 15 active minutes on the site each day to claim your daily bonus: 2 PlaceBux times your streak length, up to 50 a day. Miss a day and the streak resets. The shop sells a 48-hour window and Streak Passes that protect it.</div></div>
-        <div class="earn-card"><div class="earn-title">Fishing</div><div class="earn-desc">Casting costs 5 PlaceBux. Sell what you reel in from your bucket: common catches are worth 1 or 2, legendary ones hundreds, and the rarest items up to 2,500.</div></div>
+        <div class="earn-card"><div class="earn-title">Fishing</div><div class="earn-desc">Trade: swap fish and PlaceBux with another player from the Trade button on the Fishing screen. Maps: Sunny Pier is free; Coral Reef costs 150 PlaceBux to unlock once, and Midnight Abyss costs 500. Every map has its own fish and casting costs 5 PlaceBux everywhere. Each map has its own scenery and catches, and each of the two new maps has 9 fish you cannot catch anywhere else. Rods wear out: the free thin wooden rod snaps after 55 casts, then you buy a new one (wooden 10, plastic 20, hollow steel 50, carbon fiber 100 PlaceBux, lasting 55 / 100 / 500 / 1000 casts). Casting costs 5 PlaceBux. Sell what you reel in from your bucket: common catches are worth 1 or 2, legendary ones hundreds, and the rarest items up to 2,500.</div></div>
         <div class="earn-card"><div class="earn-title">Flappy Bird</div><div class="earn-desc">1 PlaceBux per pipe you clear, no bet needed. Capped at 600 a day.</div></div>
-        <div class="earn-card"><div class="earn-title">Casino games</div><div class="earn-desc">Bet PlaceBux on Slots, Roulette, Coin Flip, Blackjack, Plinko, Mines, GeoDash, UNO, and Battle Mode in the Casino. Max bet is 5,000. Big wins and losses get announced in lobby chat.</div></div>
+        <div class="earn-card"><div class="earn-title">Casino games</div><div class="earn-desc">Bet PlaceBux on Slots, Roulette, Coin Flip, Blackjack, Plinko, Mines, GeoDash, UNO, Battle Mode and Fishing Timing in the Casino. Max bet is 5,000. Big wins and losses get announced in lobby chat.</div></div>
         <div class="earn-card"><div class="earn-title">Night Event</div><div class="earn-desc">Watch the Lobbies screen for the Night Event banner. Sign up when it opens; the winner takes 10,000 PlaceBux.</div></div>
         <div class="earn-card"><div class="earn-title">Gifts from friends</div><div class="earn-desc">Anyone can send you PlaceBux from the Transfer tab in the Shop.</div></div>
         <div class="menu-section">Spending</div>
@@ -1695,16 +1755,28 @@ let WS_HOST = BACKEND_HOST || location.host;
 const _origFetch = window.fetch;
 window.fetch = function(url, ...args) {
   if (typeof url === 'string' && url.startsWith('/')) url = BACKEND + url;
-  return _origFetch.call(this, url, ...args);
+  const p = _origFetch.call(this, url, ...args);
+  const sent = args[0] && args[0].headers && args[0].headers.Authorization;
+  if (sent && sent === authToken) p.then(r => { if (r.status === 401 && authToken === sent) { try { r.clone().json().then(j => { if (j && /not authenticated/i.test(j.error || '') && authToken === sent) ghostLogout(); }).catch(() => {}); } catch {} } }).catch(() => {});
+  return p;
 };
+function ghostLogout() {
+  authToken = ''; username = '';
+  try { safeStore.removeItem('ezplace_token'); safeStore.removeItem('ezplace_user'); } catch {}
+  try { logout(); } catch {}
+  try { setAuthMode(false); openMenuView('auth', true); } catch {}
+}
 
 async function selectBackend() {
   if (location.hostname === RENDER_HOST) return;
   try {
     const forced = new URLSearchParams(location.search).get('backend');
     if (forced) {
+      // Only our own hosts are accepted: an arbitrary host would receive the login token and could inject markup.
       const host = forced === 'proxy' ? (BACKEND_CANDIDATES[1] || BACKEND_CANDIDATES[0])
-                 : forced === 'primary' ? BACKEND_CANDIDATES[0] : forced;
+                 : forced === 'primary' ? BACKEND_CANDIDATES[0]
+                 : (BACKEND_CANDIDATES.includes(forced) ? forced : null);
+      if (!host) throw new Error('unknown backend');
       BACKEND_HOST = host; BACKEND = 'https://' + host; WS_HOST = host;
       return;
     }
@@ -1805,6 +1877,7 @@ const GUEST_BUTTONS = new Set(['btn-menu-earn2', 'btn-menu-lobbies', 'btn-menu-l
 function menuIsOpen() { return document.body.classList.contains('menu-open'); }
 function friendsViewOpen() { return menuIsOpen() && menuView === 'friends'; }
 function renderMenuHome() {
+  updateMenuOnlineVisibility();
   const authed = !!authToken;
   const guest = !authed && isGuest;
   document.getElementById('menu-home-auth').style.display = (authed || guest) ? 'none' : '';
@@ -1834,6 +1907,10 @@ function leaveMenuView() {
   const h = menuViewHooks[menuView];
   if (h && h.leave) { try { h.leave(); } catch {} }
 }
+function updateMenuOnlineVisibility() {
+  const box = document.getElementById('menu-online');
+  if (box) box.style.display = (authToken || isGuest) ? '' : 'none';
+}
 let _menuOnlineTimer = 0;
 async function refreshMenuOnline() {
   const el = document.getElementById('menu-online-text'); if (!el) return;
@@ -1842,10 +1919,12 @@ async function refreshMenuOnline() {
   if (n === null) {
     try { const r = await fetch('/api/lobbies', { cache: 'no-store' }); const d = await r.json(); n = (d.lobbies || []).reduce((a, l) => a + (typeof l.online === 'number' ? l.online : 0), 0); } catch {}
   }
-  if (n !== null) el.textContent = n + ' online';
+  if (n !== null) { if (authToken && n < 1) { n = 1; setTimeout(refreshMenuOnline, 2000); } el.textContent = n + ' online'; }
+  else setTimeout(refreshMenuOnline, 3000);
 }
 function startMenuOnlinePoll() { refreshMenuOnline(); if (!_menuOnlineTimer) _menuOnlineTimer = setInterval(() => { if (menuIsOpen()) refreshMenuOnline(); }, 20000); }
 function openMenuView(name, resetHistory) {
+  updateMenuOnlineVisibility();
   startMenuOnlinePoll();
   document.body.classList.toggle('in-lobby', !!currentLobbyId);
   if (!document.getElementById('menu-view-' + name)) name = 'home';
@@ -1881,7 +1960,6 @@ function requireAuthView(name) {
 }
 document.getElementById('menu-back').onclick = menuBack;
 document.getElementById('menu-close').onclick = hideMenu;
-document.getElementById('btn-menu').onclick = () => showMenu('home');
 document.getElementById('btn-more').onclick = (e) => { e.stopPropagation(); const p = document.getElementById('more-panel'); p.style.display = p.style.display === 'none' ? '' : 'none'; };
 document.addEventListener('click', (e) => { const p = document.getElementById('more-panel'); if (p && p.style.display !== 'none' && !e.target.closest('#more-wrap')) p.style.display = 'none'; });
 document.getElementById('more-panel').addEventListener('click', (e) => { if (e.target.closest('button')) document.getElementById('more-panel').style.display = 'none'; });
@@ -1942,6 +2020,8 @@ function fishApplyState(st) {
   if (typeof st.balance === 'number') { myBalance = st.balance; applyPbState(); }
   fishRender();
   fishUpdateCooldown();
+  if (!fishBusy) fsSyncTheme();
+  ['fs-', 'mg-'].forEach(p => withScene(p, () => { if (!fishBusy) fsApplyRod(); }));
 }
 async function fishLoad() {
   if (!authToken) return;
@@ -1960,7 +2040,211 @@ function fishTile(it, opts) {
   const name = known ? esc(it.name) : 'Undiscovered';
   const meta = known ? `<span class="fish-rarity">${esc(it.rarity)}</span> &middot; ${it.value} PlaceBux${opts.qty ? ' &middot; x' + opts.qty : ''}${opts.caught ? ' &middot; caught ' + opts.caught : ''}` : `<span class="fish-rarity">${esc(it.rarity)}</span> &middot; ? PlaceBux`;
   const actions = opts.sell ? `<div class="fish-actions"><button data-sell="${esc(it.id)}" data-qty="1">Sell 1</button><button data-sell="${esc(it.id)}" data-qty="all">Sell all</button></div>` : '';
-  return `<div class="fish-item${known ? '' : ' undiscovered'}" style="--rc:${color}"><div class="fish-name">${name}</div><div class="fish-meta">${meta}</div>${actions}</div>`;
+  const chip = it.map ? '<span class="fish-mapchip">' + esc(FISH_MAP_NAMES[it.map] || it.map) + ' only</span>' : '';
+  return `<div class="fish-item${known ? '' : ' undiscovered'}" style="--rc:${color}"><div class="fish-name">${name}${chip}</div><div class="fish-meta">${meta}</div>${actions}</div>`;
+}
+// ---- Fishing maps: pick where you fish; unlock new ones by paying with fish ----
+const FISH_MAP_NAMES = { reef: 'Coral Reef', abyss: 'Midnight Abyss' };
+const MAP_SWATCH = {
+  pier: 'linear-gradient(#5aa9e6, #bfe6ff 55%, #2f8fc4 56%, #14456f)',
+  reef: 'linear-gradient(#5cc8ff, #dff8ff 55%, #35e0c9 56%, #0b6f86)',
+  abyss: 'linear-gradient(#050816, #231a52 55%, #0a2a55 56%, #01030d)',
+};
+function fishRenderMaps() {
+  const panel = document.getElementById('fish-map-panel');
+  if (!panel || !fishState || !fishState.maps) return;
+  const counts = {};
+  (fishState.catalog || []).forEach(it => { counts[it.rarity] = (counts[it.rarity] || 0) + ((fishState.inv || {})[it.id] || 0); });
+  panel.innerHTML = '<div class="map-list">' + fishState.maps.map(m => {
+    const here = fishState.map === m.id;
+    let status;
+    if (here) status = '<span class="map-here">✓ You are here</span>';
+    else if (m.unlocked) status = '<button class="map-btn" data-travel="' + esc(m.id) + '">Go fishing here</button>';
+    else {
+      const bal = fishState.balance || 0;
+      status = '<div class="map-need">Unlock for <b>' + m.price + ' PlaceBux</b>' + (bal >= m.price ? '' : ' <span style="color:var(--red)">(you have ' + bal + ')</span>') + '</div><button class="map-btn" data-unlock="' + esc(m.id) + '">Unlock</button>';
+    }
+    return '<div class="map-card' + (here ? ' here' : '') + '"><div class="map-swatch" style="background:' + (MAP_SWATCH[m.id] || '#444') + '"></div><div class="map-info">'
+      + '<div class="map-name">' + esc(m.name) + '</div><div class="map-blurb">' + esc(m.blurb) + ' · ' + m.cast_cost + ' PlaceBux per cast</div>' + (m.exclusive ? '<div class="map-excl">' + m.exclusive + ' species found nowhere else</div>' : '') + status + '</div></div>';
+  }).join('') + '</div>';
+  panel.querySelectorAll('button[data-travel]').forEach(b => { b.onclick = () => fishTravelMap(b.dataset.travel); });
+  panel.querySelectorAll('button[data-unlock]').forEach(b => { b.onclick = () => fishUnlockMap(b.dataset.unlock); });
+}
+async function fishTravelMap(id) {
+  if (fishBusy || !authToken) return;
+  fishSetStatus('');
+  try {
+    const r = await fetch(BACKEND + '/api/fishing/map/travel', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: authToken }, body: JSON.stringify({ map_id: id }) });
+    const d = await r.json();
+    if (d.state) fishApplyState(d.state);
+    if (d.error) fishSetStatus(d.error, 'var(--red)');
+    else { const m = (d.state.maps || []).find(x => x.id === id); fishSetStatus('Now fishing at ' + (m ? m.name : id), 'var(--green)'); }
+  } catch { fishSetStatus('Server offline', 'var(--red)'); }
+}
+async function fishUnlockMap(id) {
+  if (fishBusy || !authToken || !fishState) return;
+  const m = (fishState.maps || []).find(x => x.id === id); if (!m) return;
+  fishSetStatus('');
+  try {
+    const r = await fetch(BACKEND + '/api/fishing/map/unlock', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: authToken }, body: JSON.stringify({ map_id: id }) });
+    const d = await r.json();
+    if (d.state) fishApplyState(d.state);
+    if (d.error) fishSetStatus(d.error, 'var(--red)');
+    else fishSetStatus('Unlocked ' + m.name + ' for ' + d.paid + ' PlaceBux!', 'var(--green)');
+  } catch { fishSetStatus('Server offline', 'var(--red)'); }
+}
+// ---- Trading with another player (fish + PlaceBux on top) ----
+let fishTrade = null, tradeOpen = false, tradeMsg = '', tradeMsgColor = '', tradeDraft = null, tradeTimer = 0;
+function tradeSetMsg(t, c) { tradeMsg = t || ''; tradeMsgColor = c || ''; }
+async function tradeApi(path, body) {
+  try {
+    const r = await fetch(BACKEND + path, { method: path.includes('/state') ? 'GET' : 'POST', headers: { 'Content-Type': 'application/json', Authorization: authToken }, body: path.includes('/state') ? undefined : JSON.stringify(body || {}) });
+    return await r.json();
+  } catch { return { error: 'Server offline' }; }
+}
+function showTradeToast(text, onClick) {
+  const container = document.getElementById('dm-toast-container'); if (!container) return;
+  const toast = document.createElement('div'); toast.className = 'dm-toast';
+  toast.innerHTML = '<div class="dm-toast-from">\u{1F91D} Trade</div><div class="dm-toast-text">' + esc(text) + '</div>';
+  toast.onclick = () => { toast.classList.add('closing'); setTimeout(() => toast.remove(), 250); if (onClick) onClick(); };
+  container.appendChild(toast);
+  setTimeout(() => { if (!toast.parentNode) return; toast.classList.add('closing'); setTimeout(() => toast.remove(), 250); }, 8000);
+}
+async function tradeLoad() {
+  if (!authToken) return;
+  const d = await tradeApi('/api/trade/state');
+  if (d && d.ok) { fishTrade = d.trade; tradeDraft = null; }
+  tradeRender();
+}
+function tradeToggle() { tradeOpen = !tradeOpen; tradeRender(); if (tradeOpen) tradeLoad(); }
+function tradeFishName(id) { const it = ((fishState && fishState.catalog) || []).find(x => x.id === id); return it ? it.name : id; }
+function tradeFishValue(id) { const it = ((fishState && fishState.catalog) || []).find(x => x.id === id); return it ? it.value : 0; }
+function tradeOfferHtml(off) {
+  const lines = Object.entries((off && off.fish) || {}).map(([id, q]) => '<div class="trade-line">' + q + '× ' + esc(tradeFishName(id)) + ' <span class="trade-dim">(' + tradeFishValue(id) * q + ')</span></div>').join('');
+  const pb = (off && off.pb) ? '<div class="trade-line trade-pb">+ ' + off.pb + ' PlaceBux</div>' : '';
+  return (lines || pb) ? lines + pb : '<div class="trade-dim">nothing yet</div>';
+}
+function tradeRender() {
+  const panel = document.getElementById('fish-trade-panel'), btn = document.getElementById('btn-fish-trade');
+  const t = fishTrade;
+  const incoming = !!(t && t.status === 'pending' && t.initiator !== t.you);
+  if (btn) {
+    btn.classList.toggle('alert', incoming);
+    btn.textContent = incoming ? 'Trade (request from ' + t.partner + ')' : (t && t.status === 'open' ? 'Trade (with ' + t.partner + ')' : 'Trade');
+  }
+  if (!panel) return;
+  panel.style.display = tradeOpen ? '' : 'none';
+  if (!tradeOpen) return;
+  const msg = tradeMsg ? '<div class="trade-note" style="color:' + (tradeMsgColor || 'var(--text-muted)') + '">' + esc(tradeMsg) + '</div>' : '';
+  let html;
+  if (!t) {
+    html = '<div class="trade-title">Trade with a player</div><div class="trade-sub">Swap fish (as many as you like) and add PlaceBux on top. Both of you must confirm, and changing anything cancels the confirmations.</div>'
+      + '<div class="trade-row"><input id="trade-to" class="win-input" maxlength="20" placeholder="Player name" autocomplete="off"><button class="map-btn" id="trade-send">Send request</button></div>' + msg;
+  } else if (t.status === 'pending') {
+    html = incoming
+      ? '<div class="trade-title">' + esc(t.partner) + ' wants to trade with you</div><div class="trade-row"><button class="map-btn" id="trade-accept">Accept</button><button class="map-btn trade-grey" id="trade-decline">Decline</button></div>' + msg
+      : '<div class="trade-title">Waiting for ' + esc(t.partner) + ' to accept…</div><div class="trade-row"><button class="map-btn trade-grey" id="trade-cancel">Cancel request</button></div>' + msg;
+  } else {
+    const draft = tradeDraft || { fish: Object.assign({}, t.your_offer.fish), pb: t.your_offer.pb };
+    const inv = (fishState && fishState.inv) || {};
+    const seenF = (fishState && fishState.seen) || {}, rk = it => FISH_RARITY_ORDER.indexOf(it.rarity);
+    const owned = ((fishState && fishState.catalog) || []).filter(it => seenF[it.id] || inv[it.id] > 0 || draft.fish[it.id]).sort((x, y) => rk(x) - rk(y) || x.value - y.value);
+    const rows = owned.map(it => {
+      const q = draft.fish[it.id] || 0;
+      return '<div class="trade-pick' + (q ? ' on' : '') + '"><span class="trade-pname" style="border-left:3px solid ' + (FISH_RARITY_COLORS[it.rarity] || '#888') + '">' + esc(it.name) + '<span class="trade-dim trade-block">' + it.value + ' · have ' + (inv[it.id] || 0) + '</span></span>'
+        + '<span class="trade-step"><button data-tdelta="-1" data-tid="' + esc(it.id) + '">−</button><b>' + q + '</b><button data-tdelta="1" data-tid="' + esc(it.id) + '">+</button></span></div>';
+    }).join('') || '<div class="trade-dim">You have not discovered any fish yet.</div>';
+    const iConf = t.you_confirmed, theyConf = t.they_confirmed;
+    const empty = !Object.keys(draft.fish).length && !draft.pb && !Object.keys(t.their_offer.fish).length && !t.their_offer.pb;
+    html = '<div class="trade-title">Trading with ' + esc(t.partner) + '</div>'
+      + '<div class="trade-cols"><div class="trade-col"><div class="trade-h">You offer</div><div class="trade-picks">' + rows + '</div>'
+      + '<div class="trade-row"><label class="trade-dim">PlaceBux on top</label><input id="trade-pb" class="win-input" type="number" min="0" max="100000" value="' + (draft.pb || 0) + '"></div></div>'
+      + '<div class="trade-col"><div class="trade-h">' + esc(t.partner) + ' offers</div>' + tradeOfferHtml(t.their_offer) + '</div></div>'
+      + '<div class="trade-status">' + (iConf ? '✅ You confirmed' : 'You have not confirmed') + ' · ' + (theyConf ? '✅ ' + esc(t.partner) + ' confirmed' : esc(t.partner) + ' has not confirmed') + '</div>'
+      + (t.note ? '<div class="trade-note" style="color:var(--red)">' + esc(t.note) + '</div>' : '') + msg
+      + '<div class="trade-row"><button class="map-btn" id="trade-confirm"' + (empty ? ' disabled' : '') + '>' + (iConf ? 'Un-confirm' : 'Confirm trade') + '</button><button class="map-btn trade-grey" id="trade-cancel">Cancel trade</button></div>';
+  }
+  const oldPicks = panel.querySelector('.trade-picks'), keepTop = oldPicks ? oldPicks.scrollTop : 0;
+  panel.innerHTML = '<div class="trade-card">' + html + '</div>';
+  const newPicks = panel.querySelector('.trade-picks'); if (newPicks) newPicks.scrollTop = keepTop;
+  const $ = (id) => panel.querySelector('#' + id);
+  if ($('trade-send')) $('trade-send').onclick = async () => {
+    const to = ($('trade-to').value || '').trim(); if (!to) return;
+    const d = await tradeApi('/api/trade/invite', { to });
+    if (d.error) tradeSetMsg(d.error, 'var(--red)'); else { fishTrade = d.trade; tradeSetMsg('Request sent to ' + d.trade.partner, 'var(--green)'); }
+    tradeRender();
+  };
+  if ($('trade-accept')) $('trade-accept').onclick = async () => { const d = await tradeApi('/api/trade/respond', { accept: true }); if (d.error) tradeSetMsg(d.error, 'var(--red)'); else { fishTrade = d.trade; tradeSetMsg(''); } fishLoad(); tradeRender(); };
+  if ($('trade-decline')) $('trade-decline').onclick = async () => { await tradeApi('/api/trade/respond', { accept: false }); fishTrade = null; tradeSetMsg('Declined'); tradeRender(); };
+  if ($('trade-cancel')) $('trade-cancel').onclick = async () => { await tradeApi('/api/trade/cancel'); fishTrade = null; tradeDraft = null; tradeSetMsg('Trade cancelled'); tradeRender(); };
+  if ($('trade-confirm')) $('trade-confirm').onclick = async () => {
+    const d = await tradeApi('/api/trade/confirm', { confirm: !(fishTrade && fishTrade.you_confirmed) });
+    if (d.error) { tradeSetMsg(d.error, 'var(--red)'); tradeRender(); return; }
+    fishTrade = d.trade;
+    if (d.done) tradeFinished(d.trade); else tradeRender();
+  };
+  panel.querySelectorAll('button[data-tdelta]').forEach(b => { b.onclick = () => tradeStep(b.dataset.tid, parseInt(b.dataset.tdelta)); });
+  if ($('trade-pb')) $('trade-pb').onchange = (e) => {
+    const d = tradeDraftGet(); d.pb = Math.max(0, Math.min(100000, parseInt(e.target.value) || 0)); tradeQueueSend();
+  };
+}
+function tradeDraftGet() { if (!tradeDraft && fishTrade) tradeDraft = { fish: Object.assign({}, fishTrade.your_offer.fish), pb: fishTrade.your_offer.pb }; return tradeDraft; }
+function tradeStep(id, delta) {
+  const d = tradeDraftGet(); if (!d) return;
+  const have = ((fishState && fishState.inv) || {})[id] || 0;
+  const q = Math.max(0, Math.min(have, (d.fish[id] || 0) + delta));
+  if (q) d.fish[id] = q; else delete d.fish[id];
+  tradeRender(); tradeQueueSend();
+}
+function tradeQueueSend() {
+  clearTimeout(tradeTimer);
+  tradeTimer = setTimeout(async () => {
+    const d = tradeDraft; if (!d) return;
+    const res = await tradeApi('/api/trade/offer', { fish: d.fish, pb: d.pb });
+    if (res.trade) fishTrade = res.trade;
+    tradeDraft = null;
+    if (res.error) tradeSetMsg(res.error, 'var(--red)'); else tradeSetMsg('');
+    tradeRender();
+  }, 300);
+}
+function tradeFinished(t) {
+  const got = Object.entries(t.their_offer.fish).map(([id, q]) => q + '× ' + tradeFishName(id)).join(', ');
+  const pb = t.their_offer.pb ? (got ? ' + ' : '') + t.their_offer.pb + ' PlaceBux' : '';
+  tradeSetMsg('Trade complete! You received: ' + ((got + pb) || 'nothing'), 'var(--green)');
+  fishTrade = null; tradeDraft = null;
+  fishLoad(); tradeRender();
+}
+document.getElementById('btn-fish-trade').onclick = tradeToggle;
+function fishRenderRod() {
+  const panel = document.getElementById('fish-rod-panel');
+  if (!panel || !fishState || !fishState.rod) return;
+  const r = fishState.rod, st = ROD_STYLES[r.type] || ROD_STYLES.wooden;
+  const pct = r.max ? Math.max(0, Math.min(100, Math.round(r.left / r.max * 100))) : 0;
+  const barColor = r.broken ? 'var(--red)' : (pct > 50 ? '#22c55e' : (pct > 20 ? '#f0b232' : '#ef4444'));
+  const icoColor = rodColor(r);
+  const shop = (fishState.rods || []).map(d => {
+    const c = (ROD_STYLES[d.id] || ROD_STYLES.wooden).c;
+    const eq = r.type === d.id && !r.broken, owned = !eq && d.owned > 0;
+    return '<button class="rod-buy' + (eq ? ' equipped' : '') + '" data-rod="' + esc(d.id) + '"><span class="rb-name"><span class="rb-dot" style="background:' + c + '"></span>' + esc(d.name) + '</span><span class="rb-sub">' + (owned ? 'owned - ' + d.owned + ' / ' + d.durability + ' casts left - tap to equip' : d.durability + ' casts - ' + d.price + ' PlaceBux') + (eq ? ' - equipped' : '') + '</span></button>';
+  }).join('');
+  panel.innerHTML = '<div class="rod-card"><div class="rod-head">'
+    + '<svg class="rod-ico" viewBox="0 0 60 24" aria-hidden="true"><line x1="4" y1="20" x2="' + (r.broken ? 26 : 56) + '" y2="' + (r.broken ? 12 : 4) + '" stroke="' + icoColor + '" stroke-width="' + (st.w + 1) + '" stroke-linecap="round"/></svg>'
+    + '<div><div class="rod-name">' + esc(r.name) + '</div><div class="rod-sub' + (r.broken ? ' broken' : '') + '">' + (r.broken ? 'SNAPPED - buy a new rod' : r.left + ' / ' + r.max + ' casts left') + '</div></div></div>'
+    + '<div class="rod-bar"><div class="rod-fill" style="width:' + pct + '%;background:' + barColor + '"></div></div>'
+    + '<div class="rod-shop">' + shop + '</div></div>';
+  panel.querySelectorAll('button[data-rod]').forEach(b => { b.onclick = () => fishBuyRod(b.dataset.rod); });
+}
+async function fishBuyRod(id) {
+  if (fishBusy || !authToken || !fishState) return;
+  const d = (fishState.rods || []).find(x => x.id === id); if (!d) return;
+  const r = fishState.rod;
+  fishSetStatus('');
+  try {
+    const res = await fetch(BACKEND + '/api/fishing/rod/buy', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: authToken }, body: JSON.stringify({ rod_id: id }) });
+    const j = await res.json();
+    if (j.state) fishApplyState(j.state);
+    if (j.error) fishSetStatus(j.error, 'var(--red)'); else fishSetStatus(j.equipped ? 'Equipped ' + d.name : 'Bought a ' + d.name + '!', 'var(--green)');
+  } catch { fishSetStatus('Server offline', 'var(--red)'); }
 }
 function fishRender() {
   if (!fishState) return;
@@ -1969,7 +2253,18 @@ function fishRender() {
   const discovered = cat.filter(it => seen[it.id]).length;
   const stats = document.getElementById('fish-stats');
   const bucketValue = cat.reduce((s, it) => s + (inv[it.id] || 0) * it.value, 0);
-  stats.textContent = `${discovered} / ${cat.length} discovered \u00b7 ${fishState.casts || 0} casts \u00b7 bucket worth ${bucketValue} PlaceBux \u00b7 ${fishState.casts_left_today} casts left today`;
+  // Profit = everything the fish earned (sold + still in the bucket) minus what the casts cost.
+  // bucket = fish you still hold; total = every fish you have ever caught, sold or not.
+  //   bucket profit = bucket worth - what those fish cost to catch;  total profit = total worth - everything spent on casts.
+  const bucketProfit = bucketValue - (fishState.bucket_cost || 0);
+  const totalWorth = fishState.total_worth || 0;
+  const totalProfit = totalWorth - (fishState.spent || 0) + (fishState.trade_net || 0);
+  const signed = (n) => '<span style="color:' + (n >= 0 ? '#22c55e' : 'var(--red)') + '">' + (n >= 0 ? '+' : '\u2212') + Math.abs(n) + '</span>';
+  stats.innerHTML = discovered + ' / ' + cat.length + ' discovered \u00b7 ' + (fishState.casts || 0) + ' casts \u00b7 ' + fishState.casts_left_today + ' casts left today'
+    + '<br>bucket worth ' + bucketValue + ' \u00b7 bucket profit ' + signed(bucketProfit)
+    + '<br>total worth ' + totalWorth + ' \u00b7 total profit ' + signed(totalProfit) + ' PlaceBux';
+  fishRenderMaps();
+  fishRenderRod();
   const invEl = document.getElementById('fish-inventory');
   const owned = cat.filter(it => inv[it.id] > 0).sort((a, b) => b.value - a.value || rank(b) - rank(a));
   invEl.innerHTML = owned.length ? owned.map(it => fishTile(it, { qty: inv[it.id], sell: true })).join('') : '<div class="lobby-empty" style="grid-column:1/-1;">Your bucket is empty. Cast a line!</div>';
@@ -1986,6 +2281,7 @@ function fishUpdateCooldown() {
   const left = Math.ceil((fishReadyAt - Date.now()) / 1000);
   if (fishBusy) { btn.disabled = true; btn.textContent = 'Casting...'; return; }
   if (left > 0) { btn.disabled = true; btn.textContent = `Line is out \u00b7 ${left}s`; return; }
+  if (fishState.rod && fishState.rod.broken) { btn.disabled = true; btn.textContent = 'Rod snapped - buy a new one below'; return; }
   if (fishState.casts_left_today <= 0) { btn.disabled = true; btn.textContent = 'No casts left today'; return; }
   btn.disabled = false;
   btn.textContent = fishState.cast_cost ? `Cast line (${fishState.cast_cost} PlaceBux)` : 'Cast line';
@@ -2051,6 +2347,32 @@ const FISH_ART_MAP = {
   blue_whale: ['whale', '#3a6aa8'], coelacanth: ['fish', '#3a5a8a', '#7a9ac8'], sunken_crown: ['crown', '#e6b422'], diamond: ['gem', '#8be8ff'], mermaid_comb: ['comb', '#f4a8d8'],
   kraken: ['octo', '#6a3a8a'], leviathan: ['whale', '#4a1a5a', true], poseidon_trident: ['trident', '#3bd6c6'],
 };
+// ---- Map-exclusive fish (Coral Reef + Midnight Abyss) ----
+Object.assign(FISH_ART, {
+  turtle: (a, b) => `<ellipse cx="34" cy="48" rx="10" ry="4.5" fill="${b}" transform="rotate(25 34 48)"/><ellipse cx="60" cy="48" rx="10" ry="4.5" fill="${b}" transform="rotate(-25 60 48)"/><ellipse cx="32" cy="16" rx="10" ry="4.5" fill="${b}" transform="rotate(-25 32 16)"/><path d="M18 34L6 38L16 28Z" fill="${b}"/><ellipse cx="46" cy="32" rx="27" ry="19" fill="${a}"/><path d="M28 24H64M28 40H64M46 13V51M34 18L30 46M58 18L62 46" stroke="#0005" stroke-width="2" fill="none"/><circle cx="80" cy="30" r="9" fill="${b}"/>${_fe(84, 27, 2.4)}`,
+  serpent: (a) => `<path d="M8 42Q22 8 38 36T70 30T92 16" stroke="#ef4444" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M8 42Q22 8 38 36T70 30T92 16" stroke="#fde047" stroke-width="6.5" fill="none" stroke-linecap="round"/><path d="M8 42Q22 8 38 36T70 30T92 16" stroke="#22d3ee" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="92" cy="16" r="8" fill="${a}"/><path d="M88 9l-3-7 6 4 3-7 3 7 6-3-4 7Z" fill="#a855f7"/>${_fe(94, 14, 2.6)}`,
+  pearl: (a, b) => `<path d="M16 50Q50 68 84 50L72 38H28Z" fill="${b}"/><path d="M28 38Q50 28 72 38" stroke="#0004" stroke-width="2" fill="none"/><circle cx="50" cy="26" r="21" fill="${a}"/><circle cx="50" cy="26" r="21" fill="none" stroke="#cbb8ff" stroke-width="2"/><circle cx="42" cy="18" r="7" fill="#fff" opacity=".85"/><circle cx="58" cy="34" r="3" fill="#fff" opacity=".4"/>`,
+  whaleshark: (a) => FISH_ART.shark(a) + `<g fill="#fff" opacity=".85"><circle cx="34" cy="26" r="1.8"/><circle cx="44" cy="30" r="1.8"/><circle cx="54" cy="24" r="1.8"/><circle cx="62" cy="30" r="1.8"/><circle cx="72" cy="26" r="1.6"/><circle cx="40" cy="36" r="1.6"/><circle cx="52" cy="38" r="1.6"/><circle cx="66" cy="38" r="1.6"/></g>`,
+  megalodon: (a) => FISH_ART.shark(a) + `<path d="M8 34l3 7 3-7 3 7 3-7 3 7 3-7" fill="#fff" stroke="#0004" stroke-width=".8"/><path d="M10 33l3-6 3 6 3-6 3 6" fill="#fff" stroke="#0004" stroke-width=".8"/>`,
+  dumbo: (a) => `<ellipse cx="24" cy="12" rx="9" ry="6" fill="${a}" transform="rotate(-20 24 12)"/><ellipse cx="76" cy="12" rx="9" ry="6" fill="${a}" transform="rotate(20 76 12)"/>` + FISH_ART.octo(a),
+  gulper: (a) => FISH_ART.long(a) + `<path d="M2 28L20 18V42Z" fill="#111827"/><path d="M4 28L18 21V35Z" fill="#7f1d1d"/>`,
+  viperfish: (a, b) => FISH_ART.fish(a, b) + `<path d="M17 31l-4 8M21 33l-3 8M25 35l-2 7" stroke="#fff" stroke-width="2" stroke-linecap="round"/><g fill="#67e8f9"><circle cx="40" cy="42" r="1.5"/><circle cx="50" cy="44" r="1.5"/><circle cx="60" cy="42" r="1.5"/></g>`,
+  lantern: (a, b) => FISH_ART.fish(a, b) + `<g fill="#67e8f9"><circle cx="34" cy="40" r="2"/><circle cx="44" cy="43" r="2"/><circle cx="54" cy="43" r="2"/><circle cx="64" cy="40" r="2"/></g><circle cx="44" cy="43" r="5" fill="#67e8f9" opacity=".25"/>`,
+});
+Object.assign(FISH_ART_MAP, {
+  // Coral Reef
+  clownfish: ['fish', '#ff7a1a', '#ffffff'], blue_tang: ['tall', '#2563eb', '#fde047'], parrotfish: ['fish', '#22c55e', '#f472b6'], butterflyfish: ['tall', '#fde047', '#111827'],
+  sea_turtle: ['turtle', '#3f9d5a', '#7bbf6a'], mandarin_dragonet: ['fish', '#2dd4bf', '#f97316'], whale_shark: ['whaleshark', '#4b6a8a'], giant_pearl: ['pearl', '#f5f0ff', '#e8c1d5'], rainbow_serpent: ['serpent', '#14b8a6'],
+  // more Coral Reef
+  damselfish: ['fish', '#3b82f6', '#fde047'], hermit_crab: ['crab', '#d97757'], cleaner_wrasse: ['long', '#38bdf8'], triggerfish: ['tall', '#a3a3a3', '#f59e0b'], cuttlefish: ['squid', '#c4a484'], nudibranch: ['snail', '#f472b6', '#a855f7'],
+  mantis_shrimp: ['shrimp', '#22c55e'], blue_ringed_octopus: ['octo', '#facc15'], reef_shark: ['shark', '#6b8ba4'], tiger_shark: ['shark', '#7a8f6a'], giant_grouper: ['fish', '#8a6a3a', '#5a3f1a'], coral_crown: ['crown', '#fb7185'], reef_guardian: ['whale', '#0d9488', true],
+  // more Midnight Abyss
+  cusk_eel: ['long', '#52525b'], hatchetfish: ['tall', '#94a3b8', '#475569'], deepsea_isopod: ['shrimp', '#a1a1aa'], fangtooth: ['viperfish', '#27272a', '#18181b'], barreleye: ['fish', '#64748b', '#334155'], sea_spider: ['crab', '#7c3aed'],
+  frilled_shark: ['long', '#78716c'], oarfish: ['long', '#cbd5e1'], black_swallower: ['angler', '#18181b'], giant_isopod: ['crab', '#a8a29e'], sleeper_shark: ['shark', '#57534e'], black_pearl: ['pearl', '#1f2937', '#334155'], abyssal_horror: ['octo', '#4c1d95'],
+  // Midnight Abyss
+  lanternfish: ['lantern', '#334155', '#1e293b'], ghost_shrimp: ['shrimp', '#cfe1ff'], viperfish: ['viperfish', '#1f2937', '#0f172a'], dumbo_octopus: ['dumbo', '#f0abfc'],
+  vampire_squid: ['squid', '#7a1f2b'], gulper_eel: ['gulper', '#1e293b'], goblin_shark: ['bill', '#d89aa8', '#e8c5cd'], colossal_squid: ['squid', '#a23b6b'], megalodon: ['megalodon', '#475569'],
+});
 function fishArt(it) {
   const m = FISH_ART_MAP[it && it.id];
   const col = FISH_RARITY_COLORS[it && it.rarity] || '#9aa0a6';
@@ -2064,31 +2386,198 @@ const _fsEase = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 const _fsLerp = (a, b, t) => a + (b - a) * t;
 const _fsAnim = (ms, fn) => new Promise(res => { const t0 = performance.now(); (function f(n) { const t = Math.min(1, (n - t0) / ms); fn(t); if (t < 1) requestAnimationFrame(f); else res(); })(t0); });
 function _fsTip(phi) { const r = phi * Math.PI / 180; return [FS.bx + FS.len * Math.cos(r), FS.by - FS.len * Math.sin(r)]; }
+// Two copies of the fishing scene exist (Fishing screen: prefix "fs-", casino minigame: prefix "mg-"). FSP picks the active one.
+let FSP = 'fs-';
+const fsEl = (n) => document.getElementById(FSP + n);
+// Backgrounds for the fishing scene, one per map. Same layout in all of them (dock on the left, water from y=104), so the
+// rod / cast / reel animations work unchanged. Each returns the markup for the background layer.
+const FISH_BG = {
+  pier: (p) => `
+      <defs>
+        <linearGradient id="${p}sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5aa9e6"/><stop offset="1" stop-color="#bfe6ff"/></linearGradient>
+        <linearGradient id="${p}sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f8fc4"/><stop offset="1" stop-color="#14456f"/></linearGradient>
+      </defs>
+      <rect width="320" height="110" fill="url(#${p}sky)"/>
+      <circle cx="276" cy="28" r="14" fill="#ffe79a"/>
+      <ellipse cx="210" cy="26" rx="22" ry="7" fill="#fff" opacity=".8"/><ellipse cx="226" cy="22" rx="14" ry="6" fill="#fff" opacity=".8"/>
+      <rect x="26" y="106" width="8" height="54" fill="#5a3a1a"/><rect x="104" y="106" width="8" height="54" fill="#5a3a1a"/>
+      <rect y="104" width="320" height="56" fill="url(#${p}sea)" opacity=".92"/>
+      <g class="fs-wave"><path id="${p}wave-path" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2"/></g>
+      <rect x="38" y="76" width="30" height="24" rx="8" fill="#7c5cfc"/>
+      <rect x="0" y="100" width="130" height="8" fill="#8b5a2b"/><rect x="0" y="107" width="130" height="3" fill="#5a3a1a"/>`,
+  reef: (p) => `
+      <defs>
+        <linearGradient id="${p}sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5cc8ff"/><stop offset="1" stop-color="#dff8ff"/></linearGradient>
+        <linearGradient id="${p}sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#35e0c9"/><stop offset="1" stop-color="#0b6f86"/></linearGradient>
+      </defs>
+      <rect width="320" height="110" fill="url(#${p}sky)"/>
+      <circle cx="276" cy="26" r="26" fill="#fff6b0" opacity=".35"/><circle cx="276" cy="26" r="15" fill="#fff2a0"/>
+      <ellipse cx="196" cy="28" rx="24" ry="7" fill="#fff" opacity=".85"/><ellipse cx="212" cy="23" rx="15" ry="6" fill="#fff" opacity=".85"/>
+      <ellipse cx="250" cy="105" rx="46" ry="9" fill="#f3dc9d"/>
+      <path d="M238 104 Q233 84 243 70" stroke="#8b5a2b" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M243 70 Q226 58 214 72 Q232 66 243 70Z" fill="#26a04b"/><path d="M243 70 Q262 56 274 70 Q256 64 243 70Z" fill="#33b85a"/><path d="M243 70 Q238 52 252 47 Q246 59 243 70Z" fill="#26a04b"/>
+      <path d="M268 104 Q272 90 266 80" stroke="#8b5a2b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M266 80 Q254 72 246 82 Q258 77 266 80Z" fill="#33b85a"/><path d="M266 80 Q280 70 288 80 Q274 76 266 80Z" fill="#26a04b"/>
+      <rect x="26" y="106" width="8" height="54" fill="#e8dcc0"/><rect x="104" y="106" width="8" height="54" fill="#e8dcc0"/>
+      <rect y="104" width="320" height="56" fill="url(#${p}sea)" opacity=".92"/>
+      <path d="M150 160 V146 M150 152 L142 142 M150 152 L158 140" stroke="#ff7a59" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M170 160 V150 M170 154 L164 146 M170 154 L177 144" stroke="#ff5d8f" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <ellipse cx="196" cy="158" rx="15" ry="12" fill="#f472b6" opacity=".85"/>
+      <circle cx="232" cy="159" r="11" fill="#fbbf24" opacity=".85"/><circle cx="262" cy="160" r="9" fill="#fb923c" opacity=".85"/>
+      <path d="M212 160 q-5 -10 0 -18 t0 -16" stroke="#22c55e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M286 160 q-5 -10 0 -18 t0 -14" stroke="#16a34a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <g fill="#ffd23f"><ellipse cx="146" cy="128" rx="6" ry="3.5"/><path d="M152 128 l6 -4 v8z"/></g>
+      <g fill="#60a5fa"><ellipse cx="256" cy="138" rx="6" ry="3.5"/><path d="M250 138 l-6 -4 v8z"/></g>
+      <g fill="#fb7185"><ellipse cx="206" cy="122" rx="5" ry="3"/><path d="M211 122 l5 -3 v6z"/></g>
+      <circle cx="132" cy="140" r="2" fill="none" stroke="#fff" stroke-opacity=".5"/><circle cx="136" cy="132" r="1.4" fill="none" stroke="#fff" stroke-opacity=".5"/>
+      <g class="fs-wave"><path id="${p}wave-path" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2"/></g>
+      <rect x="38" y="76" width="30" height="24" rx="8" fill="#7c5cfc"/>
+      <rect x="0" y="100" width="130" height="8" fill="#e3c88d"/><rect x="0" y="107" width="130" height="3" fill="#b89455"/>`,
+  abyss: (p) => `
+      <defs>
+        <linearGradient id="${p}sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#050816"/><stop offset="1" stop-color="#231a52"/></linearGradient>
+        <linearGradient id="${p}sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a2a55"/><stop offset="1" stop-color="#01030d"/></linearGradient>
+        <radialGradient id="${p}glow"><stop offset="0" stop-color="#ffe9a0" stop-opacity=".9"/><stop offset="1" stop-color="#ffe9a0" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="320" height="110" fill="url(#${p}sky)"/>
+      <g fill="#fff"><circle cx="20" cy="14" r="1"/><circle cx="52" cy="30" r="1.3"/><circle cx="84" cy="10" r="1"/><circle cx="112" cy="26" r=".8"/><circle cx="140" cy="12" r="1.4"/><circle cx="168" cy="34" r="1"/><circle cx="196" cy="16" r="1.2"/><circle cx="224" cy="40" r=".8"/><circle cx="300" cy="12" r="1.1"/><circle cx="310" cy="46" r="1"/><circle cx="36" cy="52" r=".9"/><circle cx="244" cy="12" r="1"/></g>
+      <circle cx="268" cy="30" r="14" fill="#eef2fa"/><circle cx="275" cy="25" r="13" fill="#0c0c24"/>
+      <path d="M0 104 L40 84 L70 98 L110 76 L150 100 L200 80 L250 98 L290 82 L320 100 V104Z" fill="#0a0e24"/>
+      <rect x="26" y="106" width="8" height="54" fill="#2b2f3a"/><rect x="104" y="106" width="8" height="54" fill="#2b2f3a"/>
+      <rect y="104" width="320" height="56" fill="url(#${p}sea)" opacity=".96"/>
+      <g><path d="M190 138 Q200 118 210 138Z" fill="#22d3ee" opacity=".55"/><path d="M193 138 q-2 8 0 14 M200 138 q0 9 0 16 M207 138 q2 8 0 14" stroke="#67e8f9" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".8"/></g>
+      <g opacity=".75"><path d="M250 150 Q258 134 266 150Z" fill="#f472b6" opacity=".6"/><path d="M253 150 q-1 7 0 12 M258 150 q0 8 0 14 M263 150 q1 7 0 12" stroke="#f9a8d4" stroke-width="1.2" fill="none" stroke-linecap="round"/></g>
+      <ellipse cx="150" cy="148" rx="10" ry="6" fill="#0b1226"/><path d="M142 146 q-6 -8 -12 -4" stroke="#0b1226" stroke-width="1.2" fill="none"/><circle cx="130" cy="142" r="6" fill="#fde68a" opacity=".25"/><circle cx="130" cy="142" r="2.4" fill="#fde68a"/>
+      <g fill="#67e8f9" opacity=".8"><circle cx="170" cy="124" r="1.4"/><circle cx="226" cy="118" r="1.2"/><circle cx="286" cy="132" r="1.5"/><circle cx="120" cy="150" r="1.2"/><circle cx="238" cy="150" r="1.1"/><circle cx="300" cy="148" r="1.3"/></g>
+      <ellipse cx="160" cy="106" rx="170" ry="6" fill="#cbd5e1" opacity=".1"/>
+      <g class="fs-wave"><path id="${p}wave-path" fill="none" stroke="#9ec5ff" stroke-opacity=".3" stroke-width="2"/></g>
+      <rect x="38" y="76" width="30" height="24" rx="8" fill="#7c5cfc"/>
+      <rect x="0" y="100" width="130" height="8" fill="#4b5262"/><rect x="0" y="107" width="130" height="3" fill="#2b303c"/>
+      <rect x="121" y="80" width="3" height="20" fill="#2b303c"/><rect x="117" y="70" width="11" height="12" rx="2" fill="#fde68a"/><circle cx="122.5" cy="76" r="22" fill="url(#${p}glow)"/>`,
+};
+function buildFishScene(el, p, theme) {
+  theme = FISH_BG[theme] ? theme : 'pier';
+  el.dataset.theme = theme;
+  el.innerHTML = `
+    <svg class="fs-layer" viewBox="0 0 320 160" aria-hidden="true">${FISH_BG[theme](p)}
+    </svg>
+    <img id="${p}avatar" class="fs-avatar" alt="">
+    <svg class="fs-layer" viewBox="0 0 320 160" aria-hidden="true">
+      <ellipse id="${p}rip" cx="232" cy="108" rx="0" ry="0" fill="none" stroke="#fff" stroke-width="2" opacity="0"/>
+      <line x1="66" y1="90" x2="72" y2="86" stroke="#e9b98a" stroke-width="5" stroke-linecap="round"/>
+      <line id="${p}rod" x1="72" y1="86" x2="158" y2="36" stroke="#6b4423" stroke-width="3" stroke-linecap="round"/>
+      <line id="${p}rodhl" x1="72" y1="86" x2="158" y2="36" stroke="#fff" stroke-opacity=".5" stroke-width="1" stroke-linecap="round" style="display:none"/>
+      <g id="${p}rodpiece" style="display:none"><line id="${p}rodpiece-l" x1="0" y1="0" x2="0" y2="0" stroke="#6b4423" stroke-width="3" stroke-linecap="round"/></g>
+      <path id="${p}line" d="" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="1"/>
+      <g id="${p}bob" style="display:none"><circle r="5" fill="#fff"/><path d="M-5 0A5 5 0 0 1 5 0Z" fill="#e53935"/></g>
+    </svg>
+    <div id="${p}item" class="fs-item"></div>`;
+}
+document.querySelectorAll('.fish-scene[data-pfx]').forEach(el => buildFishScene(el, el.dataset.pfx, 'pier'));
+// Rebuild both scenes when the player's current map changes (never in the middle of a cast).
+function fsSyncTheme() {
+  const theme = (fishState && fishState.map) || 'pier';
+  document.querySelectorAll('.fish-scene[data-pfx]').forEach(el => {
+    if (el.dataset.theme === theme) return;
+    buildFishScene(el, el.dataset.pfx, theme);
+    withScene(el.dataset.pfx, fsSetup);
+  });
+}
+function withScene(p, fn) { const old = FSP; FSP = p; try { return fn(); } finally { FSP = old; } }
 function fsDraw(phi, bx, by, sag, showBob, showLine) {
   const [tx, ty] = _fsTip(phi);
-  const rod = document.getElementById('fs-rod'); if (!rod) return;
+  const rod = fsEl('rod'); if (!rod) return;
   rod.setAttribute('x2', tx.toFixed(1)); rod.setAttribute('y2', ty.toFixed(1));
-  const line = document.getElementById('fs-line');
+  const rhl = fsEl('rodhl'); if (rhl) { rhl.setAttribute('x2', tx.toFixed(1)); rhl.setAttribute('y2', ty.toFixed(1)); }
+  const line = fsEl('line');
   if (showLine === undefined ? showBob : showLine) line.setAttribute('d', `M${tx.toFixed(1)} ${ty.toFixed(1)}Q${((tx + bx) / 2).toFixed(1)} ${((ty + by) / 2 + sag).toFixed(1)} ${bx.toFixed(1)} ${by.toFixed(1)}`);
   else line.setAttribute('d', '');
-  const bob = document.getElementById('fs-bob');
+  const bob = fsEl('bob');
   bob.style.display = showBob ? '' : 'none';
   bob.setAttribute('transform', `translate(${bx.toFixed(1)} ${by.toFixed(1)})`);
 }
 function fsIdle() {
   fsDraw(FS.rest, FS.tx, FS.ty, 0, false);
-  const it = document.getElementById('fs-item'); if (it) it.style.display = 'none';
+  const it = fsEl('item'); if (it) it.style.display = 'none';
 }
 function fsRipple(t) {
-  const r = document.getElementById('fs-rip'); if (!r) return;
+  const r = fsEl('rip'); if (!r) return;
   r.setAttribute('rx', (4 + 24 * t).toFixed(1)); r.setAttribute('ry', (1 + 6 * t).toFixed(1)); r.setAttribute('opacity', (1 - t).toFixed(2));
 }
 function fsSetup() {
-  const wp = document.getElementById('fs-wave-path');
+  const wp = fsEl('wave-path');
   if (wp && !wp.getAttribute('d')) { let d = 'M0 110'; for (let i = 0; i < 12; i++) d += 'q10 -6 20 0t20 0'; wp.setAttribute('d', d); }
-  const av = document.getElementById('fs-avatar');
+  const av = fsEl('avatar');
   if (av) { av.onerror = () => { av.onerror = null; av.src = DEFAULT_AVATAR; }; av.src = avatarUrl(username); }
+  fsApplyRod();
   fsIdle();
+}
+// ---- rod looks + snap animation ----
+const ROD_STYLES = {
+  wooden: { c: '#6b4423', w: 3, hl: null },
+  plastic: { c: '#38bdf8', w: 3.6, hl: { o: 0.6, w: 1 } },
+  steel: { c: '#aeb8c2', w: 4.2, hl: { o: 0.85, w: 1.5 } },
+  carbon: { c: '#1f2937', w: 3.6, hl: { o: 0.4, w: 1.6, dash: '3 3' } },
+};
+function mixHex(a, b, t) {
+  const p = (h) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+  const x = p(a), y = p(b);
+  return '#' + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, '0')).join('');
+}
+function rodColor(info) {
+  const st = ROD_STYLES[info.type] || ROD_STYLES.wooden;
+  const ratio = info.max ? info.left / info.max : 1;
+  // the closer the rod is to snapping the redder it gets
+  return (!info.broken && ratio < 0.2) ? mixHex(st.c, '#ef4444', Math.min(0.65, (0.2 - ratio) / 0.2 * 0.65)) : st.c;
+}
+function fsApplyRod() {
+  const rod = fsEl('rod'); if (!rod) return;
+  const info = (fishState && fishState.rod) || { type: 'wooden', left: 55, max: 55, broken: false };
+  const st = ROD_STYLES[info.type] || ROD_STYLES.wooden;
+  rod.setAttribute('stroke', rodColor(info)); rod.setAttribute('stroke-width', st.w);
+  const hl = fsEl('rodhl');
+  if (hl) {
+    if (st.hl) { hl.style.display = ''; hl.setAttribute('stroke-opacity', st.hl.o); hl.setAttribute('stroke-width', st.hl.w); if (st.hl.dash) hl.setAttribute('stroke-dasharray', st.hl.dash); else hl.removeAttribute('stroke-dasharray'); }
+    else hl.style.display = 'none';
+  }
+  FS.len = info.broken ? 45 : 100;   // a snapped rod is just a stub
+  fsDraw(FS.rest, FS.tx, FS.ty, 0, false);
+}
+async function fsSnapRod() {
+  const rod = fsEl('rod'), hl = fsEl('rodhl'), pg = fsEl('rodpiece'), pl = fsEl('rodpiece-l');
+  if (!rod || !pg || !pl) return;
+  const scene = rod.closest('.fish-scene');
+  const baseColor = rod.getAttribute('stroke');
+  const setRod = (x, y) => { rod.setAttribute('x2', x.toFixed(1)); rod.setAttribute('y2', y.toFixed(1)); if (hl) { hl.setAttribute('x2', x.toFixed(1)); hl.setAttribute('y2', y.toFixed(1)); } };
+  // 1. the rod strains: it shakes and turns red
+  if (scene) scene.classList.add('fs-shaking');
+  await _fsAnim(600, t => { const [x, y] = _fsTip(FS.rest + Math.sin(t * 55) * 5 * t); setRod(x, y); rod.setAttribute('stroke', mixHex(baseColor, '#ef4444', t * 0.9)); });
+  if (scene) scene.classList.remove('fs-shaking');
+  // 2. SNAP: the rod breaks in two, the top half tumbles into the water
+  const [fx, fy] = _fsTip(FS.rest);
+  const mx = FS.bx + (fx - FS.bx) * 0.45, my = FS.by + (fy - FS.by) * 0.45;
+  setRod(mx, my); rod.setAttribute('stroke', baseColor);
+  const lineEl = fsEl('line'); if (lineEl) lineEl.setAttribute('d', '');
+  const bobEl = fsEl('bob'); if (bobEl) bobEl.style.display = 'none';
+  pl.setAttribute('x1', mx.toFixed(1)); pl.setAttribute('y1', my.toFixed(1)); pl.setAttribute('x2', fx.toFixed(1)); pl.setAttribute('y2', fy.toFixed(1));
+  pl.setAttribute('stroke', baseColor); pl.setAttribute('stroke-width', rod.getAttribute('stroke-width'));
+  pg.style.display = ''; pg.setAttribute('opacity', '1');
+  if (scene) { const tx = document.createElement('div'); tx.className = 'fs-snap-text'; tx.textContent = 'SNAP!'; scene.appendChild(tx); setTimeout(() => tx.remove(), 1200); }
+  const cx = (mx + fx) / 2, cy = (my + fy) / 2, waterY = 106;
+  let splashAt = -1; const rip = fsEl('rip');
+  await _fsAnim(1300, t => {
+    const sec = t * 0.95, dx = 46 * sec, dy = 0.5 * 330 * sec * sec;
+    pg.setAttribute('transform', 'translate(' + dx.toFixed(1) + ' ' + dy.toFixed(1) + ') rotate(' + (260 * sec).toFixed(1) + ' ' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ')');
+    const y = cy + dy;
+    if (y > waterY) {
+      if (splashAt < 0) { splashAt = t; if (rip) rip.setAttribute('cx', (cx + dx).toFixed(1)); }
+      pg.setAttribute('opacity', Math.max(0, 1 - (y - waterY) / 22).toFixed(2));
+      fsRipple(Math.min(1, (t - splashAt) * 3.5));
+    }
+  });
+  pg.style.display = 'none'; pg.removeAttribute('transform');
+  if (rip) rip.setAttribute('cx', '232');
+  FS.len = 45; fsDraw(FS.rest, FS.tx, FS.ty, 0, false);
 }
 async function fsCastAnim() {
   await _fsAnim(700, t => {
@@ -2109,14 +2598,14 @@ async function fsRetract() {
   await _fsAnim(450, t => { const [tx, ty] = _fsTip(22); fsDraw(22, _fsLerp(FS.tx, tx, _fsEase(t)), _fsLerp(FS.ty, ty + 6, _fsEase(t)) - 14 * Math.sin(Math.PI * t), 10, true); });
 }
 async function fsReel(item) {
-  const el = document.getElementById('fs-item'); el.innerHTML = fishArt(item); el.style.display = 'block';
+  const el = fsEl('item'); el.innerHTML = fishArt(item); el.style.display = 'block';
   await _fsAnim(1000, t => {
     const p = _fsEase(t);
     const phi = 22 + 42 * Math.sin(Math.PI * Math.min(1, t * 1.15));
     const [tx, ty] = _fsTip(phi);
     const x = _fsLerp(FS.tx, tx, p), y = _fsLerp(FS.ty, ty + 4, p) - 38 * Math.sin(Math.PI * p);
     fsDraw(phi, x, y, 0, false, true);
-    const l = document.getElementById('fs-line'); l.setAttribute('d', `M${tx.toFixed(1)} ${ty.toFixed(1)}L${x.toFixed(1)} ${(y - 4).toFixed(1)}`);
+    const l = fsEl('line'); l.setAttribute('d', `M${tx.toFixed(1)} ${ty.toFixed(1)}L${x.toFixed(1)} ${(y - 4).toFixed(1)}`);
     const s = 0.5 + 0.5 * p;
     el.style.transform = `translate(${(x - 28).toFixed(1)}px, ${(y - 10).toFixed(1)}px) scale(${s.toFixed(2)})`;
     if (t < .3) fsRipple(t / .3);
@@ -2148,22 +2637,143 @@ async function fishCast() {
     if (!d || d.netfail || d.error || !d.item) {
       await fsRetract();
       if (d && d.state) fishApplyState(d.state);
-      if (d && d.netfail) { fishSetStatus('Server offline', 'var(--red)'); catchEl.textContent = 'The line snapped.'; }
+      if (d && d.netfail) { fishSetStatus('Server offline', 'var(--red)'); catchEl.textContent = 'Connection lost.'; }
       else { if (d && d.error) fishSetStatus(d.error, 'var(--red)'); catchEl.textContent = 'Nothing this time.'; }
     } else {
       await fsBite();
       await fsReel(d.item);
       const it = d.item;
       fishShowPopup(it, d.new);
-      if (d.state) fishApplyState(d.state);
       catchEl.style.setProperty('--rc', FISH_RARITY_COLORS[it.rarity] || 'var(--text-primary)');
       catchEl.innerHTML = `<b>${esc(it.name)}</b><span class="fish-rarity">${esc(it.rarity)}</span> · worth ${it.value} PlaceBux${d.new ? ' · new discovery' : ''}`;
       void catchEl.offsetWidth; catchEl.classList.add('pop');
+      if (d.rod_snapped) {
+        await fsSnapRod();
+        fishSetStatus('Your rod snapped! Buy a new one below.', 'var(--red)');
+      }
+      if (d.state) fishApplyState(d.state);
+      if (d.rod_snapped) fsApplyRod();   // state updates are held back while casting, so redraw the broken stub in its own colour
     }
-  } catch (e) { fishSetStatus('Something went wrong', 'var(--red)'); catchEl.textContent = 'The line snapped.'; }
+  } catch (e) { fishSetStatus('Something went wrong', 'var(--red)'); catchEl.textContent = 'Something went wrong.'; }
   fsIdle();
   fishBusy = false; fishUpdateCooldown();
 }
+// ---- Casino: Fishing Timing minigame ----
+let mgState = null;
+function mgPosition(tMs, first, segMs, speeds) {
+  const seg = segMs / 1000;
+  const k = Math.floor(tMs / segMs);
+  const rem = (tMs - k * segMs) / 1000;
+  let dist = Math.floor(k / 2) * seg * (speeds[0] + speeds[1]);
+  if (k % 2 === 1) dist += seg * speeds[first % 2];
+  dist += rem * speeds[(first + k) % 2];
+  const u = dist % 2;
+  return u <= 1 ? u : 2 - u;
+}
+function mgZone(pos, zones) {
+  let acc = 0;
+  for (const [name, w] of zones) { acc += w; if (pos < acc) return name; }
+  return zones[zones.length - 1][0];
+}
+function mgSetMsg(t, color) { const el = document.getElementById('mg-msg'); el.textContent = t || ''; el.style.color = color || 'var(--text-muted)'; }
+function mgBuildBar(zones) {
+  const bar = document.getElementById('mg-bar');
+  bar.querySelectorAll('.mg-seg').forEach(n => n.remove());
+  const ind = document.getElementById('mg-ind');
+  zones.forEach(([name, w]) => {
+    const seg = document.createElement('div'); seg.className = 'mg-seg'; seg.dataset.zone = name;
+    seg.style.flex = '0 0 ' + (w * 100) + '%'; seg.style.background = FISH_RARITY_COLORS[name] || '#888';
+    bar.insertBefore(seg, ind);
+  });
+  document.getElementById('mg-legend').innerHTML = zones.map(([name, w]) => '<span style="background:' + (FISH_RARITY_COLORS[name] || '#888') + '">' + esc(name.toUpperCase()) + ' ' + (Math.round(w * 1000) / 10) + '%</span>').join('');
+}
+async function mgPlay() {
+  if (fishBusy || !authToken) return;
+  fishBusy = true;
+  const castBtn = document.getElementById('btn-mg-cast'), stopBtn = document.getElementById('btn-mg-stop');
+  castBtn.disabled = true; castBtn.textContent = 'Casting...';
+  const bar = document.getElementById('mg-bar'), live = document.getElementById('mg-live'), speedEl = document.getElementById('mg-speed');
+  bar.style.display = 'none'; live.innerHTML = '&nbsp;'; live.style.color = ''; speedEl.innerHTML = '&nbsp;'; speedEl.classList.remove('fast');
+  mgSetMsg('');
+  FSP = 'mg-';
+  let rafId = 0, onKey = null;
+  try {
+    fsSetup();
+    let d;
+    try {
+      const r = await fetch(BACKEND + '/api/minigame/fish/start', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: authToken }, body: '{}' });
+      d = await r.json();
+    } catch { mgSetMsg('Server offline', 'var(--red)'); return; }
+    if (d.error) { mgSetMsg(d.error, 'var(--red)'); return; }
+    if (typeof d.balance === 'number') { myBalance = d.balance; applyPbState(); const sb = document.getElementById('shop-balance'); if (sb) sb.textContent = myUnlimited ? '∞' : myBalance; }
+    mgBuildBar(d.zones);
+    const t0 = performance.now();
+    await fsCastAnim();
+    await fsWait(() => true, 450);
+    await fsBite();
+    // marker phase: the bar appears and the player stops it
+    bar.style.display = 'flex';
+    mgSetMsg('Stop the marker! (click the bar, press STOP or Space)');
+    const ind = document.getElementById('mg-ind');
+    let stopped = false, resolveStop;
+    const stopPromise = new Promise(res => { resolveStop = res; });
+    const frame = () => {
+      if (stopped) return;
+      const el = Math.floor(performance.now() - t0);
+      const pos = mgPosition(el, d.first, d.seg_ms, d.speeds);
+      ind.style.left = (pos * 100) + '%';
+      const zone = mgZone(pos, d.zones);
+      live.textContent = zone; live.style.color = FISH_RARITY_COLORS[zone] || '#fff';
+      const fast = d.speeds[(d.first + Math.floor(el / d.seg_ms)) % 2] === Math.max(d.speeds[0], d.speeds[1]);
+      speedEl.textContent = fast ? 'VERY SPEEDY' : 'SPEEDY'; speedEl.classList.toggle('fast', fast); bar.classList.toggle('fast', fast);
+      if (el > 13000) { resolveStop('auto'); return; }
+      rafId = requestAnimationFrame(frame);
+    };
+    rafId = requestAnimationFrame(frame);
+    stopBtn.style.display = ''; castBtn.style.display = 'none';
+    const doStop = () => resolveStop('click');
+    stopBtn.onclick = doStop; bar.onclick = doStop;
+    onKey = (e) => { if (e.code === 'Space') { e.preventDefault(); doStop(); } };
+    window.addEventListener('keydown', onKey);
+    await stopPromise;
+    stopped = true; cancelAnimationFrame(rafId);
+    window.removeEventListener('keydown', onKey); onKey = null;
+    stopBtn.onclick = null; bar.onclick = null; stopBtn.style.display = 'none'; castBtn.style.display = '';
+    const elapsed = Math.floor(performance.now() - t0);
+    const pos = mgPosition(elapsed, d.first, d.seg_ms, d.speeds);
+    ind.style.left = (pos * 100) + '%';
+    const zone = mgZone(pos, d.zones);
+    live.textContent = zone; live.style.color = FISH_RARITY_COLORS[zone] || '#fff';
+    bar.querySelectorAll('.mg-seg').forEach(n => n.classList.toggle('hit', n.dataset.zone === zone));
+    mgSetMsg('Landed on ' + zone.toUpperCase() + '...');
+    let res;
+    try {
+      const r = await fetch(BACKEND + '/api/minigame/fish/stop', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: authToken }, body: JSON.stringify({ elapsed_ms: elapsed }) });
+      res = await r.json();
+    } catch { await fsRetract(); mgSetMsg('Server offline - cast lost', 'var(--red)'); return; }
+    if (res.error || !res.item) { await fsRetract(); mgSetMsg(res.error || 'Nothing this time.', 'var(--red)'); if (typeof res.balance === 'number') { myBalance = res.balance; applyPbState(); } return; }
+    await fsReel(res.item);
+    fishShowPopup(res.item, res.new);
+    if (res.rod_snapped) { await fsSnapRod(); }
+    if (typeof res.balance === 'number') { myBalance = res.balance; applyPbState(); const sb = document.getElementById('shop-balance'); if (sb) sb.textContent = myUnlimited ? '∞' : myBalance; }
+    if (res.state) fishApplyState(res.state);
+    if (res.rod_snapped) fsApplyRod();
+    mgSetMsg(res.downgraded
+      ? zone.toUpperCase() + ' hit - daily limit for legendary/mythic reached, so you got an epic: ' + res.item.name
+      : zone.toUpperCase() + ' → ' + res.item.name + (res.new ? ' (new discovery!)' : '') + ' - added to your collection', FISH_RARITY_COLORS[res.rarity] || 'var(--text-primary)');
+    await new Promise(r => setTimeout(r, 1800));
+  } catch (e) {
+    mgSetMsg('Something went wrong', 'var(--red)');
+  } finally {
+    if (rafId) cancelAnimationFrame(rafId);
+    if (onKey) window.removeEventListener('keydown', onKey);
+    try { fsIdle(); } catch {}
+    FSP = 'fs-';
+    castBtn.style.display = ''; stopBtn.style.display = 'none'; castBtn.disabled = false; castBtn.textContent = 'Cast line (30 $)';
+    fishBusy = false; try { fishUpdateCooldown(); } catch {}
+  }
+}
+document.getElementById('btn-mg-cast').onclick = mgPlay;
 async function fishSell(itemId, qty) {
   if (!authToken) return;
   try {
@@ -2182,7 +2792,7 @@ document.querySelectorAll('.menu-tab[data-ftab]').forEach(t => {
     fishRender();
   };
 });
-menuViewHooks.fishing = { enter: () => { fsSetup(); fishLoad(); if (!fishTick) fishTick = setInterval(fishUpdateCooldown, 500); }, leave: () => { if (fishTick) { clearInterval(fishTick); fishTick = null; } } };
+menuViewHooks.fishing = { enter: () => { fsSetup(); fishLoad(); tradeLoad(); if (!fishTick) fishTick = setInterval(fishUpdateCooldown, 500); }, leave: () => { if (fishTick) { clearInterval(fishTick); fishTick = null; } } };
 function updateSidebarTabs() {
   const authed = !!authToken;
   const inLobby = !!currentLobbyId;
@@ -2501,164 +3111,6 @@ function clearOwnCursor() {
   lastSentCursorX = -1; lastSentCursorY = -1; lastSentCursorTime = Date.now();
   ws.send(JSON.stringify({ type: 'cursor', x: null, y: null }));
 }
-const RTC_CONFIG = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:stun1.l.google.com:19302' }] };
-const MAX_PEERS = 8;
-let localStream = null;
-let isVideoCall = false;
-let isMuted = false;
-const peers = new Map();
-
-function rtcLog(...args) { try { console.log('[RTC]', ...args); } catch {} }
-
-function rtcSend(type, payload) {
-  if (!ws || ws.readyState !== WebSocket.OPEN) { rtcLog('WS not open, dropping', type); return; }
-  ws.send(JSON.stringify({ type, ...payload }));
-}
-
-function makeTile(name) {
-  const tile = document.createElement('div');
-  tile.className = 'rtc-tile audio-only';
-  tile.innerHTML = `<video autoplay playsinline></video><div class="rtc-name"><span class="rtc-mic">&#x1F3A4;</span><span>${esc(name)}</span></div>`;
-  document.getElementById('rtc-tiles').appendChild(tile);
-  return tile;
-}
-
-async function startCall(withVideo) {
-  if (localStream) return;
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    addSystemMsg('Voice/video requires a secure context. Try the HTTPS version of this site.');
-    return;
-  }
-  try {
-    localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: withVideo });
-  } catch (err) {
-    rtcLog('getUserMedia failed:', err.name, err.message);
-    addSystemMsg('Mic/camera permission denied or unavailable. (' + (err.name || 'error') + ')');
-    return;
-  }
-  isVideoCall = withVideo;
-  isMuted = false;
-  document.getElementById('btn-voice').style.display = 'none';
-  document.getElementById('btn-video').style.display = 'none';
-  document.getElementById('btn-mute').style.display = '';
-  document.getElementById('btn-leave-call').style.display = '';
-  const localTile = makeTile(username + ' (you)');
-  if (withVideo) localTile.classList.remove('audio-only');
-  localTile.querySelector('video').srcObject = localStream;
-  localTile.querySelector('video').muted = true;
-  peers.set('__self__', { pc: null, tile: localTile });
-  rtcLog('startCall: announcing rtc_join');
-  rtcSend('rtc_join', { video: withVideo });
-  addSystemMsg('You joined the ' + (withVideo ? 'video' : 'voice') + ' call. Others must click ' + (withVideo ? 'Video' : 'Voice') + ' to join you.');
-}
-
-function isPolite(remoteName) {
-  return (username || '').toLowerCase() < (remoteName || '').toLowerCase();
-}
-
-function makePeer(remoteName) {
-  if (peers.has(remoteName.toLowerCase())) return peers.get(remoteName.toLowerCase());
-  if (peers.size >= MAX_PEERS + 1) { rtcLog('Peer cap reached, ignoring', remoteName); return null; }
-  const pc = new RTCPeerConnection(RTC_CONFIG);
-  const tile = makeTile(remoteName);
-  const videoEl = tile.querySelector('video');
-  const peer = { pc, tile, video: videoEl, pendingIce: [], makingOffer: false, polite: isPolite(remoteName), ignoreOffer: false };
-  if (localStream) localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
-  pc.onicecandidate = e => { if (e.candidate) rtcSend('rtc_ice', { target: remoteName, candidate: e.candidate }); };
-  pc.ontrack = e => {
-    rtcLog('ontrack from', remoteName, e.track.kind);
-    videoEl.srcObject = e.streams[0];
-    if (e.track.kind === 'video') tile.classList.remove('audio-only');
-    videoEl.play().catch(err => rtcLog('video.play() rejected', err.name));
-  };
-  pc.onconnectionstatechange = () => {
-    rtcLog('connectionState', remoteName, pc.connectionState);
-    if (['failed', 'closed'].includes(pc.connectionState)) closePeer(remoteName);
-  };
-  pc.onnegotiationneeded = async () => {
-    try {
-      peer.makingOffer = true;
-      await pc.setLocalDescription();
-      rtcSend('rtc_offer', { target: remoteName, sdp: pc.localDescription });
-    } catch (err) {
-      rtcLog('negotiationneeded error', err);
-    } finally {
-      peer.makingOffer = false;
-    }
-  };
-  peers.set(remoteName.toLowerCase(), peer);
-  return peer;
-}
-
-function closePeer(remoteName) {
-  const key = remoteName.toLowerCase();
-  const p = peers.get(key);
-  if (!p) return;
-  if (p.pc) try { p.pc.close(); } catch {}
-  if (p.tile && p.tile.parentNode) p.tile.parentNode.removeChild(p.tile);
-  peers.delete(key);
-}
-
-function endCall() {
-  if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
-  for (const k of [...peers.keys()]) closePeer(k);
-  peers.clear();
-  rtcSend('rtc_leave', {});
-  isVideoCall = false; isMuted = false;
-  const showCall = !!currentLobbyId;
-  document.getElementById('btn-voice').style.display = showCall ? '' : 'none';
-  document.getElementById('btn-video').style.display = showCall ? '' : 'none';
-  document.getElementById('btn-mute').style.display = 'none';
-  document.getElementById('btn-leave-call').style.display = 'none';
-}
-
-function toggleMute() {
-  if (!localStream) return;
-  isMuted = !isMuted;
-  localStream.getAudioTracks().forEach(t => t.enabled = !isMuted);
-  document.getElementById('btn-mute').textContent = isMuted ? 'Unmute' : 'Mute';
-}
-
-document.getElementById('btn-voice').onclick = () => startCall(false);
-document.getElementById('btn-video').onclick = () => startCall(true);
-document.getElementById('btn-mute').onclick = toggleMute;
-document.getElementById('btn-leave-call').onclick = endCall;
-
-async function handleRtcMessage(msg) {
-  rtcLog('recv', msg.type, 'from', msg.username);
-  if (msg.type === 'rtc_join') {
-    if (localStream) makePeer(msg.username);
-    return;
-  }
-  if (msg.type === 'rtc_leave') { closePeer(msg.username); return; }
-  if (!localStream) return;
-  const peer = makePeer(msg.username);
-  if (!peer) return;
-  const pc = peer.pc;
-  try {
-    if (msg.type === 'rtc_offer') {
-      const offerCollision = peer.makingOffer || pc.signalingState !== 'stable';
-      peer.ignoreOffer = !peer.polite && offerCollision;
-      if (peer.ignoreOffer) { rtcLog('ignoring colliding offer from', msg.username); return; }
-      await pc.setRemoteDescription(msg.sdp);
-      for (const c of peer.pendingIce) try { await pc.addIceCandidate(c); } catch (e) { rtcLog('flush ice err', e); }
-      peer.pendingIce = [];
-      await pc.setLocalDescription();
-      rtcSend('rtc_answer', { target: msg.username, sdp: pc.localDescription });
-    } else if (msg.type === 'rtc_answer') {
-      if (pc.signalingState === 'have-local-offer') await pc.setRemoteDescription(msg.sdp);
-      for (const c of peer.pendingIce) try { await pc.addIceCandidate(c); } catch (e) { rtcLog('flush ice err', e); }
-      peer.pendingIce = [];
-    } else if (msg.type === 'rtc_ice') {
-      if (!msg.candidate) return;
-      if (!pc.remoteDescription) { peer.pendingIce.push(msg.candidate); return; }
-      try { await pc.addIceCandidate(msg.candidate); } catch (e) { if (!peer.ignoreOffer) rtcLog('addIceCandidate err', e); }
-    }
-  } catch (err) {
-    rtcLog('handleRtcMessage error', msg.type, err);
-  }
-}
-
 const TL_EVENT_SIZE = 10;
 let tlState = null;
 let tlAnimFrame = null;
@@ -3578,7 +4030,7 @@ function showMobileChatBubble(name, text, isOwner) {
   }, MOBILE_BUBBLE_DURATION);
 }
 
-function addMsg(name, text, isOwner, isMsgVip, rank, clan, replyTo, nameColor) {
+function addMsg(name, text, isOwner, isMsgVip, rank, clan, replyTo, nameColor, isDiscord) {
   const d = document.createElement('div'); d.className = 'msg';
   const isTP = name.toLowerCase() === 'toothpaste';
   const crown = isOwner ? '<span class="crown">&#x1F451;</span>' : '';
@@ -3606,6 +4058,13 @@ function addMsg(name, text, isOwner, isMsgVip, rank, clan, replyTo, nameColor) {
   } else if (isMsgVip && !isTP) {
     rankBadge = '<span class="vip-badge">[VIP]</span>';
     nameClass = 'name vip';
+  }
+  if (isDiscord) {
+    // Relayed from the Discord bridge: blue animated tag/name and the Discord logo instead of a profile picture.
+    rankBadge = '<span class="rank-badge discord-grad">[DISCORD]</span>';
+    nameClass = 'name discord-grad';
+    styleParts.length = 0;
+    d.classList.add('discord-msg');
   }
   if (nameColor && /^#[0-9a-fA-F]{3,8}$/.test(nameColor) && !isTP && !(rank && (rank.color === 'rainbow' || rank.color === 'mod'))) {
     const colorIdx = styleParts.findIndex(s => s.startsWith('color:'));
@@ -3646,7 +4105,7 @@ function addMsg(name, text, isOwner, isMsgVip, rank, clan, replyTo, nameColor) {
     replyHtml = `<div class="reply-quote" style="border-left:3px solid var(--accent);padding:1px 6px;margin:0 0 2px 0;font-size:11px;color:var(--text-muted);background:var(--accent-dim);border-radius:3px;"><b>${esc(replyTo.from)}</b>: ${esc(replyTo.text.slice(0,120))}</div>`;
   }
   const replyBtn = `<span class="reply-btn" title="Reply" style="cursor:pointer;color:var(--text-muted);font-size:11px;margin-right:4px;">&#x21A9;</span>`;
-  d.innerHTML = `${replyHtml}<span class="timestamp">${timeStr()}</span>${replyBtn}${avatarImg(name)}${crown}${clanBadge}${rankBadge}<span class="${nameClass}" data-user="${esc(name)}"${styleAttr}>${esc(name)}:</span> ${bodyHtml}`;
+  d.innerHTML = `${replyHtml}<span class="timestamp">${timeStr()}</span>${replyBtn}${isDiscord ? '' : avatarImg(name)}${crown}${clanBadge}${rankBadge}<span class="${nameClass}" data-user="${esc(name)}"${styleAttr}>${esc(name)}:</span> ${bodyHtml}`;
   if (canModerate) {
     d.querySelector('.name').addEventListener('click', e => showLobbyUserMenu(e, name));
   }
@@ -4377,7 +4836,7 @@ function openShop() {
   }
 }
 menuViewHooks.shop = { enter: openShop };
-menuViewHooks.casino = { enter: () => { const cb = document.getElementById('casino-balance'); if (cb) cb.textContent = myUnlimited ? '∞' : myBalance; } };
+menuViewHooks.casino = { enter: () => { withScene('mg-', fsSetup); if (!fishState && authToken) fishLoad().then(() => withScene('mg-', fsApplyRod));  const cb = document.getElementById('casino-balance'); if (cb) cb.textContent = myUnlimited ? '∞' : myBalance; } };
 document.getElementById('btn-shop').onclick = () => { if (!authToken) { alert('Log in to use the shop.'); return; } openMenuView('shop'); };
 
 function showShopTab(name) {
@@ -5848,14 +6307,12 @@ function gdLaunch(seed, bet, customObstacles, customLabel) {
     onGround: true, pressing: false, lastTime: performance.now(),
     startTs: performance.now(), obstacles, rafId: 0, rot: 0,
     isCustom: !!customObstacles, speedMult: 1, waveTrail: [],
+    step: 0, acc: 0, queue: [], inputs: [],
   };
-  const press = () => {
-    if (!gdState || !gdState.alive) return;
-    gdState.pressing = true;
-    if (gdState.mode === 'cube' && gdState.onGround) gdState.vy = -560;
-    else if (gdState.mode === 'ufo') gdState.vy = -340;
-  };
-  const release = () => { if (gdState) gdState.pressing = false; };
+  // Inputs are queued and applied at the start of the next fixed step, and recorded with that step number so the
+  // server can replay the run exactly.
+  const press = () => { if (gdState && gdState.alive) gdState.queue.push(1); };
+  const release = () => { if (gdState && gdState.alive) gdState.queue.push(0); };
   canvas.onmousedown = press; canvas.onmouseup = release; canvas.onmouseleave = release;
   canvas.ontouchstart = (e) => { e.preventDefault(); press(); };
   canvas.ontouchend = (e) => { e.preventDefault(); release(); };
@@ -5866,19 +6323,34 @@ function gdLaunch(seed, bet, customObstacles, customLabel) {
   gdState._keyDown = keyDown; gdState._keyUp = keyUp;
   const loop = (now) => {
     if (!gdState || !gdState.alive) return;
-    const dt = Math.min(0.05, (now - gdState.lastTime) / 1000);
+    gdState.acc += Math.min(0.25, (now - gdState.lastTime) / 1000);
     gdState.lastTime = now;
-    gdTick(dt);
-    gdDraw(ctx);
-    if (gdState.alive) gdState.rafId = requestAnimationFrame(loop);
+    while (gdState && gdState.alive && gdState.acc >= GD_STEP) {
+      gdState.acc -= GD_STEP;
+      while (gdState.queue.length) {
+        const d = gdState.queue.shift();
+        gdApplyInput(gdState, !!d);
+        if (gdState.inputs.length < 6000) gdState.inputs.push([gdState.step, d]);
+      }
+      gdState.step++;
+      gdTick(GD_STEP);
+    }
+    if (gdState) gdDraw(ctx);
+    if (gdState && gdState.alive) gdState.rafId = requestAnimationFrame(loop);
   };
   gdState.rafId = requestAnimationFrame(loop);
 }
-function gdTick(dt) {
-  const s = gdState;
+const GD_STEP = 1 / 120;
+function gdApplyInput(s, down) {
+  if (down) {
+    s.pressing = true;
+    if (s.mode === 'cube' && s.onGround) s.vy = -560;
+    else if (s.mode === 'ufo') s.vy = -340;
+  } else s.pressing = false;
+}
+// One fixed physics step. Returns 'dead' | 'won' | null. Mirrors gd_simulate() in server.py - change both together.
+function gdStepState(s, dt, onMode) {
   s.scroll += GD_SPEED * (s.speedMult || 1) * dt;
-  const progress = Math.min(1, s.scroll / GD_LEN);
-  document.getElementById('gd-progress-tag').textContent = Math.floor(progress * 100) + '%';
   if (s.mode === 'cube') {
     s.vy += 2400 * dt;
     s.y += s.vy * dt;
@@ -5917,12 +6389,12 @@ function gdTick(dt) {
           s.y = ob.y - GD_PLAYER_SZ; s.vy = 0; s.onGround = true;
         } else if (s.mode === 'ufo' && prevPy + GD_PLAYER_SZ <= ob.y + 2 && s.vy >= 0) {
           s.y = ob.y - GD_PLAYER_SZ; s.vy = 0; s.onGround = true;
-        } else { return gdDie(); }
+        } else { return 'dead'; }
       }
     } else if (ob.kind === 'spike') {
       const inset = 4;
       if (gdRectsOverlap(px + inset, py + inset, GD_PLAYER_SZ - inset * 2, GD_PLAYER_SZ - inset * 2, ob.x + 4, ob.y + 4, ob.w - 8, ob.h - 8)) {
-        return gdDie();
+        return 'dead';
       }
     } else if (ob.kind === 'speed') {
       if (!ob.used && px + GD_PLAYER_SZ >= ob.x && px <= ob.x + ob.w) {
@@ -5935,12 +6407,23 @@ function gdTick(dt) {
         s.mode = ob.mode;
         s.vy = 0;
         if (ob.mode === 'wave') s.waveTrail = [];
-        document.getElementById('gd-mode-tag').textContent = ob.mode;
-        document.getElementById('gd-mode-tag').style.color = ob.mode === 'cube' ? '#3a86ff' : (ob.mode === 'ufo' ? '#b14aed' : (ob.mode === 'plane' ? '#ff8c42' : '#22d3ee'));
+        if (onMode) onMode(ob.mode);
       }
     }
   }
-  if (s.scroll >= GD_LEN) { s.won = true; gdFinish(1); }
+  if (s.scroll >= GD_LEN) return 'won';
+  return null;
+}
+function gdTick(dt) {
+  const s = gdState;
+  const result = gdStepState(s, dt, (m) => {
+    document.getElementById('gd-mode-tag').textContent = m;
+    document.getElementById('gd-mode-tag').style.color = m === 'cube' ? '#3a86ff' : (m === 'ufo' ? '#b14aed' : (m === 'plane' ? '#ff8c42' : '#22d3ee'));
+  });
+  const progress = Math.min(1, s.scroll / GD_LEN);
+  document.getElementById('gd-progress-tag').textContent = Math.floor(progress * 100) + '%';
+  if (result === 'dead') return gdDie();
+  if (result === 'won') { s.won = true; gdFinish(1); }
 }
 function gdDie() {
   const s = gdState; if (!s || s.dead) return;
@@ -5960,7 +6443,7 @@ async function gdFinish(progress) {
   }
   resEl.textContent = 'Reporting...';
   try {
-    const r = await fetch(BACKEND + '/api/casino/gd/result', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: authToken }, body: JSON.stringify({ seed: s.seed, progress, time_ms }) });
+    const r = await fetch(BACKEND + '/api/casino/gd/result', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: authToken }, body: JSON.stringify({ seed: s.seed, progress, time_ms, steps: s.step, inputs: s.inputs }) });
     let d = null;
     try { d = await r.json(); } catch {}
     if (!d) {
@@ -6960,7 +7443,8 @@ function logout() {
   document.getElementById('dm-toast-container').innerHTML = '';
   intentionalClose = true;
   if (ws) ws.close();
-  if (socialWs) socialWs.close();
+  clearTimeout(_socialReconnectTimer);
+  if (socialWs) { const old = socialWs; socialWs = null; old.close(); }
   userBar.style.display = 'none';
   const ub2 = document.getElementById('user-bar-row2'); if (ub2) ub2.style.display = 'none';
   updateSidebarTabs();
@@ -7555,8 +8039,7 @@ async function loadLobbies() {
   } catch {}
 }
 function resetLobbyUi() {
-  ['btn-leave-lobby', 'btn-export-grid', 'btn-import-grid', 'btn-manage-current', 'btn-voice', 'btn-video', 'btn-mute', 'btn-leave-call', 'btn-timelapse', 'call-bar'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
-  if (localStream) endCall();
+  ['btn-leave-lobby', 'btn-export-grid', 'btn-import-grid', 'btn-manage-current', 'btn-timelapse'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
   document.getElementById('lobby-name-display').innerHTML = '';
 }
 
@@ -7571,9 +8054,6 @@ function joinLobby(id, name) {
   hideMenu();
   document.getElementById('btn-leave-lobby').style.display = '';
   document.getElementById('btn-export-grid').style.display = '';
-  document.getElementById('call-bar').style.display = 'flex';
-  document.getElementById('btn-voice').style.display = '';
-  document.getElementById('btn-video').style.display = '';
   document.getElementById('lobby-name-display').innerHTML = `Lobby: <b>${esc(name)}</b>`;
   messagesEl.innerHTML = '';
   grid = new Uint8Array(GRID_W * GRID_H); resetOffscreen(); render();
@@ -7912,7 +8392,6 @@ function connectToLobby(lobbyId, lobbyName) {
       case 'pixel': grid[msg.y * GRID_W + msg.x] = msg.color; setOffscreenPixel(msg.x, msg.y, msg.color); render(); break;
       case 'cursor': if (msg.username && msg.username.toLowerCase() !== (username || '').toLowerCase()) { remoteCursors[msg.username.toLowerCase()] = { name: msg.username, x: msg.x, y: msg.y, lastUpdate: Date.now() }; render(); } break;
       case 'cursor_remove': if (msg.username) { delete remoteCursors[msg.username.toLowerCase()]; render(); } break;
-      case 'rtc_join': case 'rtc_leave': case 'rtc_offer': case 'rtc_answer': case 'rtc_ice': handleRtcMessage(msg); break;
       case 'brush_perm_update': brushPerm = msg.brush_perm || { size: 1, drag: false }; updateBrushSizeSelectVisibility(); updateModeBtnVisibility(); addSystemMsg(`Your brush perms updated: size=${brushPerm.size}, drag=${brushPerm.drag ? 'on' : 'off'}`); break;
       case 'typing': {
         if (!msg.username || msg.username.toLowerCase() === (username || '').toLowerCase()) break;
@@ -7924,14 +8403,14 @@ function connectToLobby(lobbyId, lobbyName) {
       }
       case 'leaderboard_update': if (document.querySelector('[data-tab="lb-tab"]').classList.contains('active')) renderLeaderboard(msg.leaderboard); break;
       case 'pong': { const ping = Date.now() - msg.time; const el = document.getElementById('ping-ms'); el.textContent = ping; el.style.color = ping < 100 ? '#0f0' : ping < 250 ? '#ff0' : '#f00'; } break;
-      case 'chat': if (isFakeAdmin && fakeBannedUsers.has(msg.username.toLowerCase())) break; addMsg(msg.username, msg.text, msg.is_owner, msg.is_vip, msg.rank, msg.clan, msg.reply_to, msg.name_color); showMobileChatBubble(msg.username, msg.text, msg.is_owner); if (msg.username && msg.username.toLowerCase() !== (username || '').toLowerCase()) ezpMarkUnseen(); break;
+      case 'chat': if (isFakeAdmin && fakeBannedUsers.has(msg.username.toLowerCase())) break; addMsg(msg.username, msg.text, msg.is_owner, msg.is_vip, msg.rank, msg.clan, msg.reply_to, msg.name_color, !!msg.discord); showMobileChatBubble(msg.username, msg.text, msg.is_owner); if (msg.username && msg.username.toLowerCase() !== (username || '').toLowerCase()) ezpMarkUnseen(); break;
       case 'system': if (msg.text && /\breeled in an? (epic|legendary|mythic|rare)\b.* while fishing!$/.test(msg.text)) break; if (msg.text && msg.text.indexOf(' joined') !== -1) ezpMarkUnseen(); addSystemMsg(msg.text); break;
       case 'rate_warn': showCooldownWarn ? (cooldownWarn.textContent = msg.text, cooldownWarnTimer && clearTimeout(cooldownWarnTimer), cooldownWarnTimer = setTimeout(() => { cooldownWarn.innerHTML = '&nbsp;'; }, 2500)) : null; break;
       case 'night_event_state': if (msg.state) { nightEventState = msg.state; nightEventServerOffset = (msg.state.server_now_ts || 0) - Math.floor(Date.now() / 1000); renderNightEvent(); } break;
       case 'pb_update': { const wasBal = myBalance; myBalance = msg.balance || 0; myPurchases = msg.purchases || myPurchases; if (msg.streak && typeof msg.streak.count === 'number') myStreak = msg.streak.count; applyPbState(); if (myBalance > wasBal && !myUnlimited) showDmToast('PlaceBux', '+' + (myBalance - wasBal) + ' $ earned!', () => {}); break; }
       case 'streak_bonus': { myStreak = msg.count || myStreak; myStreakProgress = { seconds: myStreakProgress.required || 900, required: myStreakProgress.required || 900, earned_today: true }; if (msg.used_pass && myPurchases) myPurchases.streak_pass = msg.passes_left; applyPbState(); showDmToast('🔥 Daily Streak', (msg.used_pass ? '🛡 Streak Pass used! ' : '') + 'Day ' + msg.count + ' - +' + msg.reward + ' $', () => {}); break; }
       case 'typing_spy': if (isRealAdmin()) showTypingSpy(msg.username, msg.draft); break;
-      case 'online': document.getElementById('online-count').textContent = msg.count; if (msg.total !== undefined) document.getElementById('total-online').textContent = msg.total; if (Array.isArray(msg.users)) { lobbyUsers = msg.users.slice(); const stillHere = new Set(lobbyUsers.map(u => u.toLowerCase())); for (const k of [...peers.keys()]) { if (k !== '__self__' && !stillHere.has(k)) closePeer(k); } } break;
+      case 'online': document.getElementById('online-count').textContent = msg.count; if (msg.total !== undefined) document.getElementById('total-online').textContent = msg.total; if (Array.isArray(msg.users)) { lobbyUsers = msg.users.slice(); } break;
       case 'perm': canPlace = !!msg.can_place; break;
       case 'grid': GRID_W = msg.width || 256; GRID_H = msg.height || 256; grid = new Uint8Array(msg.data); resetOffscreen(); currentLobbyOwner = msg.owner || null; canPlace = msg.can_place !== false; brushPerm = msg.brush_perm || { size: 1, drag: false }; updateBrushSizeSelectVisibility(); updateModeBtnVisibility(); COOLDOWN = (msg.cooldown !== undefined ? msg.cooldown : 0.5) * 1000; userHasInteracted = false; resizeCanvas(); fitViewToGrid(); requestAnimationFrame(() => { resizeCanvas(); fitViewToGrid(); render(); }); if (!canPlace) addSystemMsg('You are spectating this whitelist lobby. You can chat but not place pixels.'); { isFakeAdmin = !!msg.fake_admin; fakeBannedUsers.clear(); if (isFakeAdmin) document.getElementById('admin-tab-btn').style.display = 'block'; const isOwn = (currentLobbyOwner && username && currentLobbyOwner.toLowerCase() === username.toLowerCase()); const isTPAdminUser = username && ['toothpaste','juicebox'].includes(username.toLowerCase()); document.getElementById('btn-import-grid').style.display = isOwn ? '' : 'none'; document.getElementById('btn-manage-current').style.display = (isOwn || isTPAdminUser) ? '' : 'none'; } remoteCursors = {}; typingUsers.clear(); renderTypingIndicator(); lobbyUsers = []; document.getElementById('mention-popup').style.display = 'none'; undoStack.length = 0; updateUndoButtonState(); updateTimelapseButton(); render(); break;
       case 'pixel_owner_result': {
@@ -8068,17 +8547,31 @@ function showDmToast(from, text, onClick, hideBody) {
 }
 
 let socialWs = null;
+let _socialReconnectTimer = 0;
+const _seenSocialMsgs = new Set();
 function connectSocial() {
   if (!authToken) return;
+  // Never keep two live social sockets: every extra one delivers each DM/notification again.
+  if (socialWs && (socialWs.readyState === WebSocket.OPEN || socialWs.readyState === WebSocket.CONNECTING)) return;
+  clearTimeout(_socialReconnectTimer);
   const protocol = location.protocol === 'https:' ? 'wss' : 'ws';
   const socialProto = BACKEND_HOST ? 'wss' : protocol;
   try { socialWs = new WebSocket(`${socialProto}://${WS_HOST}/ws/social`); } catch { return; }
+  const thisSocial = socialWs;
   socialWs.onopen = () => {
     socialWs.send(JSON.stringify({ type: 'auth', token: authToken, device_id: deviceId }));
     try { socialWs.send(JSON.stringify({ type: 'presence', afk: isAfk })); } catch {}
+    setTimeout(refreshMenuOnline, 1200);
   };
   socialWs.onmessage = async e => {
+    if (thisSocial !== socialWs) return;
     const msg = JSON.parse(e.data);
+    if (msg.type === 'dm' || msg.type === 'group_msg') {
+      const k = msg.type + '|' + (msg.group_id || '') + '|' + msg.from + '|' + msg.time + '|' + (msg.text || msg.image_url || msg.image || '');
+      if (_seenSocialMsgs.has(k)) return;
+      _seenSocialMsgs.add(k);
+      if (_seenSocialMsgs.size > 300) _seenSocialMsgs.delete(_seenSocialMsgs.values().next().value);
+    }
     if (msg.type === 'achievement') {
       achievementToast(msg);
       pushLiveNotification(msg);
@@ -8256,6 +8749,13 @@ function connectSocial() {
       }
     }
     if (msg.type === 'friend_accepted') { loadFriendsList(); }
+    if (msg.type === 'trade_invite' || msg.type === 'trade_update') {
+      fishTrade = msg.trade; tradeDraft = null;
+      if (msg.type === 'trade_invite') { tradeSetMsg(''); showTradeToast(msg.trade.partner + ' wants to trade with you - tap to open', () => { openMenuView('fishing'); tradeOpen = true; tradeRender(); }); playNotifSound(); }
+      tradeRender();
+    }
+    if (msg.type === 'trade_done') { tradeFinished(msg.trade); showTradeToast('Trade with ' + msg.trade.partner + ' complete!'); }
+    if (msg.type === 'trade_closed') { fishTrade = null; tradeDraft = null; tradeSetMsg(msg.reason || 'Trade closed', 'var(--red)'); tradeRender(); }
     if (msg.type === 'friend_presence') {
       loadFriendsList();
     }
@@ -8281,7 +8781,12 @@ function connectSocial() {
       if (currentGroupId === msg.group_id) loadMsgList();
     }
   };
-  socialWs.onclose = () => { setTimeout(() => { if (authToken) connectSocial(); }, 5000); };
+  socialWs.onclose = () => {
+    if (thisSocial !== socialWs) return;
+    socialWs = null;
+    clearTimeout(_socialReconnectTimer);
+    _socialReconnectTimer = setTimeout(() => { if (authToken) connectSocial(); }, 5000);
+  };
 }
 
 function addSection(panel, text) {
@@ -8477,7 +8982,7 @@ function appendDmMsg(from, text, t, image, replyTo) {
     const img = document.createElement('img');
     img.src = image; img.referrerPolicy = 'no-referrer';
     img.style.cssText = 'display:block;max-width:240px;max-height:240px;margin-top:4px;border-radius:6px;cursor:pointer;border:1px solid var(--border);';
-    img.onclick = () => window.open(image, '_blank');
+    img.onclick = () => window.open(image, '_blank', 'noopener,noreferrer');
     d.appendChild(img);
   }
   d.querySelector('.dm-reply-btn').addEventListener('click', () => setDmReply(from, text || '[image]'));
@@ -9306,12 +9811,15 @@ setInterval(ezpVersionCheck, 45000);
   if (authToken && safeStore.getItem('ezplace_user')) username = safeStore.getItem('ezplace_user');
   showMenu('home');
   await selectBackend();
+  refreshMenuOnline();
   ezpVersionCheck();
   try {
     const r = await fetch(BACKEND + '/api/auth/status', { headers: authToken ? { Authorization: authToken } : {} });
     if (r.status === 403) { ezpWriteBanFlag(); location.replace('https://www.google.com'); return; }
     const d = await r.json();
     if (d && d.banned) { ezpWriteBanFlag(); location.replace(d.redirect || 'https://www.google.com'); return; }
+    // the server no longer knows this login (expired or kicked): drop it instead of pretending to be logged in
+    if (authToken && d && d.authed === false) { authToken = ''; username = ''; safeStore.removeItem('ezplace_token'); safeStore.removeItem('ezplace_user'); }
   } catch {}
   if (BACKEND_HOST && BACKEND_HOST !== BACKEND_CANDIDATES[0]) addSystemMsg('Primary server unreachable - connected via backup proxy.');
   if (authToken && safeStore.getItem('ezplace_user')) {
